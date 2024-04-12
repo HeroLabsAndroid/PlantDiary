@@ -2,4 +2,7 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+    <color name="DRK_ACC1">#FFDE1F3C</color>
+    <color name="DRK_ACC2">#FF7CA4D9</color>
 </resources>

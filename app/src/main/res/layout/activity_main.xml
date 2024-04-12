@@ -7,10 +7,33 @@
     tools:context=".MainActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RCLVW_plants"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/BTN_newplant"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/BTN_newplant"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="Button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.62"
+        app:layout_constraintStart_toEndOf="@+id/TV_main_plantcnt" />
+
+    <TextView
+        android:id="@+id/TV_main_plantcnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_newplant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
 </androidx.constraintlayout.widget.ConstraintLayout>

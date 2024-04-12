@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:inputType="text"
-        android:text="Name"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMPT_defineplant_name"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -24,19 +25,30 @@
         android:layout_marginTop="16dp"
         android:ems="10"
         android:inputType="text"
-        android:text="Type"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMPT_defineplant_type"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_name"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_name" />
+
+    <EditText
+        android:id="@+id/ET_addplant_loc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMPT_defineplant_location"
+        app:layout_constraintStart_toStartOf="@+id/ET_addplant_type"
+        app:layout_constraintTop_toBottomOf="@+id/CNSTRLYT_addplant_acqtyp" />
 
     <Button
         android:id="@+id/BTN_addplant_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="Reinjebimst"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/CNSTRLYT_addplant_acqtyp" />
+        app:layout_constraintTop_toBottomOf="@+id/BTN_addplant_takephoto" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/CNSTRLYT_addplant_acqtyp"
@@ -59,6 +71,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:checkedButton="@id/RADBTN_addplant_acqtyp_raised"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/TV_addplant_acqtyp_label">
@@ -67,15 +80,55 @@
                 android:id="@+id/RADBTN_addplant_acqtyp_raised"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RadioButton" />
+                android:text="selbst erschaffen" />
 
             <RadioButton
                 android:id="@+id/RADBTN_addplant_acqtyp_adopted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="RadioButton" />
+                android:text="adoptiert" />
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <EditText
+        android:id="@+id/ET_addplant_potsize"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:inputType="number|numberDecimal"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMPT_defineplant_potsize"
+        app:layout_constraintStart_toStartOf="@+id/ET_addplant_loc"
+        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_loc" />
+
+    <TextView
+        android:id="@+id/TV_addplant_ownedsince"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="datum"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@+id/ET_addplant_potsize"
+        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_potsize" />
+
+    <Button
+        android:id="@+id/BTN_addplant_takephoto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:backgroundTint="@color/DRK_ACC2"
+        android:text="FOTTO!"
+        app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
+        app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
+
+    <ImageView
+        android:id="@+id/IV_addplant_profpic"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginStart="32dp"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_addplant_takephoto"
+        app:layout_constraintStart_toEndOf="@+id/BTN_addplant_takephoto"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

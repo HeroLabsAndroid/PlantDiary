@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">PlantDiary</string>
+    
+    <string name="PROMPT_defineplant_potsize">Topfgröße</string>
+    <string name="PROMPT_defineplant_location">Standort</string>
+    <string name="PROMPT_defineplant_name">Name</string>
+    <string name="PROMPT_defineplant_type">Typ</string>
+    
+    <string name="FLAG_err">"ERROR</string>
 </resources>
