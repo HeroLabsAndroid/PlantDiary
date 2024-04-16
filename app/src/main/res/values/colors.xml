@@ -5,4 +5,9 @@
 
     <color name="DRK_ACC1">#FFDE1F3C</color>
     <color name="DRK_ACC2">#FF7CA4D9</color>
+    <color name="DRK_ACC3">#FF54DB81</color>
+
+    <color name="DRK_ACC4">#FF4774D5</color>
+    <color name="DRK_ACC5">#FFD54780</color>
+    <color name="DRK_GRAYOUT">#FFE1CBF5</color>
 </resources>

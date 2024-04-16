@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/TV_lstitm_plantlog_actev"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="TextView"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TV_listitm_plantlog_type"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/TV_lstitm_plantlog_actev"
+        app:layout_constraintTop_toTopOf="@+id/TV_lstitm_plantlog_actev" />
+
+    <TextView
+        android:id="@+id/TV_lstitm_plantlog_timestamp"
+        android:layout_width="64dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="TextView"
+        app:layout_constraintStart_toEndOf="@+id/TV_listitm_plantlog_type"
+        app:layout_constraintTop_toTopOf="@+id/TV_listitm_plantlog_type" />
+
+    <Button
+        android:id="@+id/BTN_listitm_plant_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/DRK_ACC1"
+        android:fontFamily="cursive"
+        android:text="YEET"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:typeface="normal"
+        app:layout_constraintBottom_toBottomOf="@+id/TV_lstitm_plantlog_actev"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TV_lstitm_plantlog_timestamp"
+        app:layout_constraintTop_toTopOf="@+id/TV_lstitm_plantlog_actev" />
+</androidx.constraintlayout.widget.ConstraintLayout>

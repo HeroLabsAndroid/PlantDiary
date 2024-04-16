@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PlantActivity">
+
+    <TextView
+        android:id="@+id/TV_plant_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="TextView"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <include
+        android:id="@+id/INCL_TITVAL_type"
+        layout="@layout/incl_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/IV_plant_profpic" />
+
+    <include
+        android:id="@+id/INCL_TITVAL_loc"
+        layout="@layout/incl_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_type"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_type" />
+
+    <include
+        android:id="@+id/INCL_TITVAL_potsz"
+        layout="@layout/incl_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_loc"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_loc" />
+
+    <include
+        android:id="@+id/INCL_TITVAL_actyp"
+        layout="@layout/incl_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_potsz"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_potsz" />
+
+    <ImageView
+        android:id="@+id/IV_plant_profpic"
+        android:layout_width="@dimen/PLANT_PIC_HEIGHT"
+        android:layout_height="@dimen/PLANT_PIC_HEIGHT"
+        android:layout_marginStart="32dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_plant_name"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <TextView
+        android:id="@+id/TV_plant_log"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Log"
+        android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_comment" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RCLV_plant_log"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/TV_plant_log"
+        app:layout_constraintTop_toBottomOf="@+id/TV_plant_log" />
+
+    <include
+        android:id="@+id/INCL_TITVAL_comment"
+        layout="@layout/incl_title_value"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_actyp"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_actyp" />
+
+    <Button
+        android:id="@+id/BTN_plant_showphotos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/DRK_ACC2"
+        android:text="Fotoschnecke"
+        app:layout_constraintBottom_toBottomOf="@+id/IV_plant_profpic"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/IV_plant_profpic"
+        app:layout_constraintTop_toTopOf="@+id/IV_plant_profpic" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

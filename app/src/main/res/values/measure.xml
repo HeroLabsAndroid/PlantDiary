@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="MAINGRID_PIC_HEIGHT">96dp</dimen>
+    <dimen name="PLANT_PIC_HEIGHT">169dp</dimen>
+    <dimen name="ROLL_PIC_HEIGHT">128dp</dimen>
+</resources>

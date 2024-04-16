@@ -4,6 +4,7 @@ import com.example.plantdiary.io.PlantActionSave;
 import com.example.plantdiary.io.PlantLogItemSave;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PlantAction extends PlantLogItem {
     //------- VARS ---------------------------------//
@@ -21,12 +22,12 @@ public class PlantAction extends PlantLogItem {
     }
 
     //-------- CONSTRUCTORS ------------------------//
-    public PlantAction(LocalDate timestamp) {
+    public PlantAction(LocalDateTime timestamp) {
         super(timestamp);
         typ = ItemType.ACTION;
     }
 
-    public PlantAction(LocalDate timestamp, String comment) {
+    public PlantAction(LocalDateTime timestamp, String comment) {
         super(timestamp, comment);
         typ = ItemType.ACTION;
     }

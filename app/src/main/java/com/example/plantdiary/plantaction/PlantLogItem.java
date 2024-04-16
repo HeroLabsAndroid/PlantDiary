@@ -3,6 +3,7 @@ package com.example.plantdiary.plantaction;
 import com.example.plantdiary.io.PlantLogItemSave;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class PlantLogItem {
     public enum ItemType {
@@ -11,15 +12,24 @@ public abstract class PlantLogItem {
 
     //------- VARS ------------------------------------//
     ItemType typ;
-    LocalDate timestamp;
+    LocalDateTime timestamp;
     String comment = "";
     //-------- GETTERS & SETTERS ----------------------------//
 
-    public LocalDate getTimestamp() {
+
+    public ItemType getTyp() {
+        return typ;
+    }
+
+    public void setTyp(ItemType typ) {
+        this.typ = typ;
+    }
+
+    public LocalDateTime getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(LocalDate timestamp) {
+    public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -34,11 +44,11 @@ public abstract class PlantLogItem {
 
     //------- CONSTRUCTOS ------------------------------------//
 
-    public PlantLogItem(LocalDate timestamp) {
+    public PlantLogItem(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
-    public PlantLogItem(LocalDate timestamp, String comment) {
+    public PlantLogItem(LocalDateTime timestamp, String comment) {
         this.timestamp = timestamp;
         this.comment = comment;
     }

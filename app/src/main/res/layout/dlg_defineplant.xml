@@ -44,11 +44,11 @@
         android:id="@+id/BTN_addplant_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="8dp"
         android:text="Reinjebimst"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/BTN_addplant_takephoto" />
+        app:layout_constraintTop_toBottomOf="@+id/IV_addplant_profpic" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/CNSTRLYT_addplant_acqtyp"
@@ -63,7 +63,7 @@
             android:id="@+id/TV_addplant_acqtyp_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Akquisitionsart"
+            android:text="@string/PROMPT_defineplant_acqtyp"
             android:textSize="16sp" />
 
         <RadioGroup
@@ -116,19 +116,31 @@
         android:id="@+id/BTN_addplant_takephoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="8dp"
         android:backgroundTint="@color/DRK_ACC2"
         android:text="FOTTO!"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
-        app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
+        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_comment" />
 
     <ImageView
         android:id="@+id/IV_addplant_profpic"
         android:layout_width="64dp"
         android:layout_height="64dp"
         android:layout_marginStart="32dp"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_addplant_takephoto"
         app:layout_constraintStart_toEndOf="@+id/BTN_addplant_takephoto"
+        app:layout_constraintTop_toTopOf="@+id/BTN_addplant_takephoto"
         app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <EditText
+        android:id="@+id/ET_addplant_comment"
+        android:layout_width="196dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMT_defineplant_comment"
+        app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
+        app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
