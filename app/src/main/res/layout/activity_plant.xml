@@ -63,26 +63,27 @@
 
     <TextView
         android:id="@+id/TV_plant_log"
-        android:layout_width="96dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Log"
-        android:textSize="20sp"
+        android:text="Log "
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_plant_logmode"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_comment" />
+        app:layout_constraintTop_toTopOf="@+id/BTN_plant_logmode" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCLV_plant_log"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/TV_plant_log"
-        app:layout_constraintTop_toBottomOf="@+id/TV_plant_log" />
+        app:layout_constraintTop_toBottomOf="@+id/BTN_plant_logmode" />
 
     <include
-        android:id="@+id/INCL_TITVAL_comment"
+        android:id="@+id/INCL_TITVAL_ownedsince"
         layout="@layout/incl_title_value"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,5 +100,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/IV_plant_profpic"
         app:layout_constraintTop_toTopOf="@+id/IV_plant_profpic" />
+
+    <Button
+        android:id="@+id/BTN_plant_logmode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="16dp"
+        android:text="switch"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/TV_plant_log"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_ownedsince" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

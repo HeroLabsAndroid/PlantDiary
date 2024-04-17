@@ -22,14 +22,18 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.plantdiary.R;
+import com.example.plantdiary.Util;
 import com.example.plantdiary.cam.BitmapAndPath;
 import com.example.plantdiary.cam.CamOps;
 import com.example.plantdiary.io.PlantEventSave;
 import com.example.plantdiary.plant.AcquisitionType;
 import com.example.plantdiary.plant.Plant;
+import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantEvent;
 import com.example.plantdiary.plantaction.PlantEventType;
 import com.example.plantdiary.plantaction.PlantLogItem;
+import com.google.android.material.chip.Chip;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -52,6 +56,7 @@ public class NewPlantDialog extends DialogFragment {
     boolean edit_mode = false;
     int plantidx = 0;
     Plant plant;
+    ArrayList<Comment> cmt = new ArrayList<>();
 
     String img_path;
     boolean has_img = false;
@@ -59,11 +64,14 @@ public class NewPlantDialog extends DialogFragment {
     PlantAddedListener plListen;
 
     Button confirmBUTT, photoBUTT;
+    FloatingActionButton commentBUTT;
+
+    Chip preexCHIP;
 
     ImageView photoIV;
     EditText nameET, typeET, locET, potszET, commentET;
 
-    TextView dateTV;
+    TextView dateTV, commentcntTV;
 
     RadioGroup acqTypeRADGRP;
     RadioButton typeAdoptedRADBUTT, typeRaisedRADBUTT;
@@ -106,6 +114,7 @@ public class NewPlantDialog extends DialogFragment {
                     typeET.getText().toString(),
                     typeAdoptedRADBUTT.isChecked() ? AcquisitionType.ADOPTED : AcquisitionType.SELFRAISED);
             plant.setOwned_since(LocalDate.now());
+            plant.setComments(cmt);
         } else {
             if(plant.getName().compareTo(nameET.getText().toString())!=0) {
                 PlantEvent pe = new PlantEvent(LocalDateTime.now());
@@ -115,15 +124,8 @@ public class NewPlantDialog extends DialogFragment {
             plant.setName(nameET.getText().toString());
             plant.setPlanttype(typeET.getText().toString());
             plant.setAcqTyp(typeAdoptedRADBUTT.isChecked() ? AcquisitionType.ADOPTED : AcquisitionType.SELFRAISED);
+            plant.setComments(cmt);
         }
-
-        if(edit_mode && plant.getComment().compareTo(commentET.getText().toString())!=0) {
-            PlantEvent pe = new PlantEvent(LocalDateTime.now());
-            pe.setPet(PlantEventType.NEWCOMMENT);
-            pe.setComment(commentET.getText().toString());
-            plant.getLog().add(pe);
-        }
-        if(commentET.getText().toString().compareTo(getString(R.string.PROMT_defineplant_comment))!=0) plant.setComment(commentET.getText().toString());
 
 
         if(edit_mode && plant.getLocation().compareTo(locET.getText().toString())!=0) {
@@ -138,6 +140,7 @@ public class NewPlantDialog extends DialogFragment {
             pe.setPet(PlantEventType.REPOT);
             plant.getLog().add(pe);
         }
+
         if(potszET.getText().toString().compareTo(getString(R.string.PROMPT_defineplant_potsize)) != 0) {
             plant.setPotsize(Float.parseFloat(potszET.getText().toString()));
         } else plant.setPotsize(0);
@@ -151,6 +154,10 @@ public class NewPlantDialog extends DialogFragment {
             } else {
                 Log.e("MKPLANT", "ERROR! Image File not found...");
             }
+        }
+
+        if(preexCHIP.isChecked()) {
+            plant.setPre_existing(true);
         }
 
 
@@ -169,11 +176,26 @@ public class NewPlantDialog extends DialogFragment {
         locET.setText(p.getLocation());
         potszET.setText(String.format(Locale.getDefault(), "%.2f", p.getPotsize()));
 
-        dateTV.setText(p.getOwned_since().toString());
-
-        commentET.setText(plant.getComment());
 
 
+        if(p.isPre_existing()) {
+            preexCHIP.setChecked(true);
+            dateTV.setText("Pre-Existing");
+        } else {
+            dateTV.setText(Util.dateToString(p.getOwned_since()));
+        }
+
+        cmt = p.getComments();
+        commentcntTV.setText(String.format(Locale.getDefault(), "%d Kommis", cmt.size()));
+    }
+
+    void addComment() {
+        if(commentET.getText().toString().compareTo(getString(R.string.PROMT_defineplant_comment))!=0) {
+            cmt.add(new Comment(commentET.getText().toString(), LocalDateTime.now()));
+            commentET.setText(getString(R.string.PROMT_defineplant_comment));
+            commentcntTV.setText(String.format(Locale.getDefault(), "%d Kommis", cmt.size()));
+            commentET.selectAll();
+        }
     }
 
 
@@ -226,6 +248,10 @@ public class NewPlantDialog extends DialogFragment {
         photoIV = layout.findViewById(R.id.IV_addplant_profpic);
 
         photoBUTT = layout.findViewById(R.id.BTN_addplant_takephoto);
+        commentBUTT = layout.findViewById(R.id.BTN_addplant_addcomment);
+        commentcntTV = layout.findViewById(R.id.TV_addplant_commentcnt);
+
+        preexCHIP = layout.findViewById(R.id.CHP_addplant_preex);
 
         photoBUTT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -239,6 +265,13 @@ public class NewPlantDialog extends DialogFragment {
             @Override
             public void onClick(View view) {
                 confirmPlantAdded();
+            }
+        });
+
+        commentBUTT.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addComment();
             }
         });
 

@@ -9,11 +9,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantdiary.R;
 import com.example.plantdiary.Util;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
+import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.plantaction.PlantAction;
 import com.example.plantdiary.plantaction.PlantEvent;
 import com.example.plantdiary.plantaction.PlantLogItem;
@@ -31,8 +33,14 @@ public class PlantRollAdapter extends RecyclerView.Adapter<PlantRollAdapter.View
 
     Context ctx;
 
+    FragmentManager fragMan;
+
     //--------------- CUSTOM FUNCS --------------------------------//
 
+    void showPhotoDialog(ViewHolder holder) {
+        ShowPhotoDialog spDial = new ShowPhotoDialog(photos.get(holder.getAdapterPosition()));
+        spDial.show(fragMan, "logpicdial");
+    }
 
     //---------------- OVERRIDES -----------------------------------//
     @NonNull
@@ -47,7 +55,13 @@ public class PlantRollAdapter extends RecyclerView.Adapter<PlantRollAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTvTS().setText(Util.timestampToString(photos.get(position).ldt));
-        holder.getIvPhoto().setImageBitmap(photos.get(position).bm);
+        holder.getIvPhoto().setImageBitmap(Util.RotateBitmap(photos.get(position).bm, 90));
+        holder.getIvPhoto().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPhotoDialog(holder);
+            }
+        });
     }
 
     @Override
@@ -57,9 +71,10 @@ public class PlantRollAdapter extends RecyclerView.Adapter<PlantRollAdapter.View
 
     //---------------- CONSTRUCTOR ---------------------------------------------//
 
-    public PlantRollAdapter(Context c, ArrayList<BitmapAndTimestamp> photos) {
+    public PlantRollAdapter(Context c, FragmentManager fragMan, ArrayList<BitmapAndTimestamp> photos) {
         this.photos = photos;
         ctx = c;
+        this.fragMan = fragMan;
     }
 
 

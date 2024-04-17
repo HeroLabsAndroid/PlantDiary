@@ -2,6 +2,8 @@ package com.example.plantdiary;
 
 import static com.example.plantdiary.cam.CamOps.REQUEST_IMAGE_CAPTURE;
 
+import static java.security.AccessController.getContext;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -78,10 +80,11 @@ public class PlantRollActivity extends AppCompatActivity {
     }
 
     void addRollPic() {
+        CamOps.replaceWithDownscaled(this, plant.getLogPicPaths().get(plant.getLogPicPaths().size()-1));
         roll = makeRollArray();
         //rclvPhoto.getAdapter().notifyItemInserted(roll.size());
         //rclvPhoto.getAdapter().notifyItemRangeChanged(roll.size(), 1);
-        rclvPhoto.setAdapter(new PlantRollAdapter(this, roll));
+        rclvPhoto.setAdapter(new PlantRollAdapter(this, getSupportFragmentManager(), roll));
         tvPhotoCnt.setText(String.format(Locale.getDefault(), "%d Fotos", plant.getLogPicPaths().size()));
 
     }
@@ -116,7 +119,7 @@ public class PlantRollActivity extends AppCompatActivity {
 
         roll = makeRollArray();
         rclvPhoto.setLayoutManager(new GridLayoutManager(this, 2));
-        rclvPhoto.setAdapter(new PlantRollAdapter(this, roll));
+        rclvPhoto.setAdapter(new PlantRollAdapter(this, getSupportFragmentManager(), roll));
 
         tvPhotoCnt.setText(String.format(Locale.getDefault(), "%d Fotos", plant.getLogPicPaths().size()));
     }

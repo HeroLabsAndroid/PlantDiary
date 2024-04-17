@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.util.DisplayMetrics;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Locale;
 
@@ -55,5 +56,9 @@ public class Util {
 
     public static String timestampToString(LocalDateTime ldt) {
         return String.format(Locale.getDefault(), "%d.%d.%d\r\n%d:%d:%d", ldt.getDayOfMonth(), ldt.getMonth().getValue(), ldt.getYear(), ldt.getHour(), ldt.getMinute(), ldt.getSecond());
+    }
+
+    public static String dateToString(LocalDate ldt) {
+        return String.format(Locale.getDefault(), "%d.%d.%d", ldt.getDayOfMonth(), ldt.getMonth().getValue(), ldt.getYear());
     }
 }

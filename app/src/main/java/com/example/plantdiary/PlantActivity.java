@@ -3,10 +3,10 @@ package com.example.plantdiary;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -15,11 +15,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.plantdiary.cam.BitmapAndTimestamp;
+import com.example.plantdiary.datadapt.CommentAdapter;
 import com.example.plantdiary.datadapt.PlantLogAdapter;
-import com.example.plantdiary.io.PlantDiaryIO;
+import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
 
@@ -38,13 +38,15 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
     public final int ACTIVITY_ID = 1;
 
+    boolean show_log = true;
+
     Plant plant;
     int plantidx;
 
     RecyclerView rclvLog;
-    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclComm;
+    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclDate;
 
-    TextView tvTit_Type, tvVal_Type, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_comm, tvVal_comm;
+    TextView tvTit_Type, tvVal_Type, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_date, tvVal_date;
 
     TextView tvName;
 
@@ -52,12 +54,27 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
     ImageView ivProfPic;
 
-    Button btnShowPhotos;
+    Button btnShowPhotos, btnSwitchLog;
 
     //------------ CUSTOM FUNCS ------------------------------------//
 
+    void setRecViewMode(boolean log) {
+        if(log) {
+            tvLog.setText(String.format(Locale.getDefault(), "Log: \r\n(%d Items)", plant.getLog().size()));
+            btnSwitchLog.setText("Show Commies");
+            rclvLog.setLayoutManager(new LinearLayoutManager(this));
+            rclvLog.setAdapter(new PlantLogAdapter(this, plant.getLog()));
+        } else {
+            tvLog.setText(String.format(Locale.getDefault(), "Commies: \r\n(%d Items)", plant.getComments().size()));
+            btnSwitchLog.setText("Show Log");
+            rclvLog.setLayoutManager(new LinearLayoutManager(this));
+            rclvLog.setAdapter(new CommentAdapter(this, plant.getComments()));
+        }
+    }
+
     void fillLayoutWithPlantData() {
-        tvVal_comm.setText(plant.getComment());
+
+        tvVal_date.setText(plant.isPre_existing() ? "Pre-Existing" : Util.dateToString(plant.getOwned_since()));
 
         tvName.setText(plant.getName());
 
@@ -74,15 +91,36 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
             ivProfPic.setImageBitmap(bm);
         }
 
-        tvLog.setText(String.format(Locale.getDefault(), "Log \r\n(%d Items)", plant.getLog().size()));
+        tvLog.setText(String.format(Locale.getDefault(), "Log: \r\n(%d Items)", plant.getLog().size()));
+        btnSwitchLog.setText("Show Commies");
 
-        rclvLog.setLayoutManager(new LinearLayoutManager(this));
-        rclvLog.setAdapter(new PlantLogAdapter(this, plant.getLog()));
+        setRecViewMode(show_log);
+
 
         btnShowPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 launchPlantActivity();
+            }
+        });
+
+        ivProfPic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(plant.hasPicture()) {
+                    FragmentManager fragMan = getSupportFragmentManager();
+                    ShowPhotoDialog spDial = new ShowPhotoDialog(new BitmapAndTimestamp(plant.getProfilepic(), null));
+                    spDial.show(fragMan, "profpicdial");
+                }
+
+            }
+        });
+
+        btnSwitchLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                show_log = !show_log;
+                setRecViewMode(show_log);
             }
         });
     }
@@ -116,10 +154,10 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         tvTit_actyp.setText(getString(R.string.PROMPT_defineplant_acqtyp));
         tvVal_actyp = inclAcqtyp.findViewById(R.id.TV_incl_titval_val);
 
-        inclComm = findViewById(R.id.INCL_TITVAL_comment);
-        tvTit_comm = inclComm.findViewById(R.id.TV_incl_titval_tit);
-        tvTit_comm.setText("Kommentar: ");
-        tvVal_comm = inclComm.findViewById(R.id.TV_incl_titval_val);
+        inclDate = findViewById(R.id.INCL_TITVAL_ownedsince);
+        tvTit_date = inclDate.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_date.setText(getString(R.string.PROMPT_defineplant_date));
+        tvVal_date = inclDate.findViewById(R.id.TV_incl_titval_val);
 
         ivProfPic = findViewById(R.id.IV_plant_profpic);
 
@@ -129,6 +167,7 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
         btnShowPhotos = findViewById(R.id.BTN_plant_showphotos);
 
+        btnSwitchLog = findViewById(R.id.BTN_plant_logmode);
 
 
     }

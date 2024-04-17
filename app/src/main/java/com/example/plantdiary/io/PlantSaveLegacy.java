@@ -1,7 +1,6 @@
 package com.example.plantdiary.io;
 
 import com.example.plantdiary.plant.AcquisitionType;
-import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantAction;
 
 import java.io.Serializable;
@@ -9,17 +8,16 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
-public class PlantSave implements Serializable {
+public class PlantSaveLegacy implements Serializable {
 
     //----------------- VARS ------------------------//
     public float potsize;
     public LocalDate owned_since;
-    public boolean pre_existing;
 
     public String name;
     public String planttype;
 
-    public ArrayList<Comment> comments = new ArrayList<>();
+    public String comment;
 
     public String location;
 
@@ -35,8 +33,8 @@ public class PlantSave implements Serializable {
     //--------------- CONSTRUCTOR --------------------------//
 
 
-    public PlantSave(float potsize, LocalDate owned_since, boolean pre_existing, String name, String planttype, String location, AcquisitionType aqcType,
-                     ArrayList<PlantLogItemSave> log, boolean has_img, String img_path, ArrayList<String> logpicpaths, ArrayList<LocalDateTime> logpictimes, ArrayList<Comment> comments) {
+    public PlantSaveLegacy(float potsize, LocalDate owned_since, String name, String planttype, String location, AcquisitionType aqcType,
+                     ArrayList<PlantLogItemSave> log, boolean has_img, String img_path, ArrayList<String> logpicpaths, ArrayList<LocalDateTime> logpictimes, String comment) {
         this.potsize = potsize;
         this.owned_since = owned_since;
         this.name = name;
@@ -47,8 +45,8 @@ public class PlantSave implements Serializable {
         this.has_img = has_img;
         this.img_path = img_path;
         this.logpicpaths = logpicpaths;
-        this.comments = comments;
+        this.comment = comment;
         this.logpictimes = logpictimes;
-        this.pre_existing = pre_existing;
     }
 }
+

@@ -33,6 +33,25 @@ public class PlantDiaryIO {
         return dat;
     }
 
+    static public ArrayList<Plant> loadLegacyData(Context con) {
+        ArrayList<Plant> dat = new ArrayList<>();
+
+        try {
+            FileInputStream fis = con.openFileInput("plantlog.dat");
+            ObjectInputStream ois = new ObjectInputStream(fis);
+            Log.d("RDDAT", String.format(Locale.getDefault(), "Opened file (%s) and Object Stream.", fis.toString()));
+            int cnt = (int)ois.readObject();
+            for(int i=0; i< cnt; i++) dat.add(new Plant((PlantSaveLegacy) ois.readObject()));
+            Log.d("RDDAT", String.format(Locale.getDefault(),"Read %d objects.",dat.size()));
+            ois.close();
+            fis.close();
+        } catch(Exception e) {
+            Log.e("RDDAT", e.toString());
+        }
+
+        return dat;
+    }
+
     static public void saveData(Context con, ArrayList<Plant> logs) {
         try {
             FileOutputStream fos = con.openFileOutput("plantlog.dat", Context.MODE_PRIVATE);

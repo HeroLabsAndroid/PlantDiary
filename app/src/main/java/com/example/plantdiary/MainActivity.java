@@ -29,6 +29,9 @@ import java.util.ArrayList;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements NewPlantDialog.PlantAddedListener, PlantAdapter.PlantRemovedListener, PlantAdapter.PlantEditDialogLauncher {
+    //------------ CONST ---------------------------------------------//
+
+    final boolean LOAD_LEGACY = false;
 
     //------------- VIEWS -------------------------------------------//
     Button newPlantBtn, waterBtn, fertBtn;
@@ -96,6 +99,12 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+        if(LOAD_LEGACY) {
+            plants = PlantDiaryIO.loadLegacyData(this);
+            PlantDiaryIO.saveData(this, plants);
+            finish();
+        }
         plants = PlantDiaryIO.loadData(this);
 
         newPlantBtn = findViewById(R.id.BTN_newplant);

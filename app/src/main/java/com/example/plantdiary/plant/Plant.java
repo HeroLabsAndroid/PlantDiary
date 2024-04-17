@@ -10,6 +10,8 @@ import com.example.plantdiary.io.PlantActionSave;
 import com.example.plantdiary.io.PlantEventSave;
 import com.example.plantdiary.io.PlantLogItemSave;
 import com.example.plantdiary.io.PlantSave;
+import com.example.plantdiary.io.PlantSaveLegacy;
+import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantAction;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.example.plantdiary.plantaction.PlantEvent;
@@ -26,12 +28,13 @@ public class Plant {
     //-------------- VARS -------------------------- //
     private float potsize;
     private LocalDate owned_since;
+    private boolean pre_existing = true;
 
     private AcquisitionType acqTyp;
 
     private String name;
 
-    private String comment = "";
+    public ArrayList<Comment> comments = new ArrayList<>();
     private String planttype;
 
     private String location;
@@ -45,6 +48,8 @@ public class Plant {
     private ArrayList<String> logPicPaths = new ArrayList<>();
     private ArrayList<LocalDateTime> logPicTS = new ArrayList<>();
     private boolean has_picture = false;
+
+
 
     //--------------------------GETTERS AND SETTERS------------------------------------//
 
@@ -141,12 +146,20 @@ public class Plant {
         return has_picture;
     }
 
-    public String getComment() {
-        return comment;
+    public ArrayList<Comment> getComments() {
+        return comments;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void setComments(ArrayList<Comment> comment) {
+        this.comments = comments;
+    }
+
+    public boolean isPre_existing() {
+        return pre_existing;
+    }
+
+    public void setPre_existing(boolean pre_existing) {
+        this.pre_existing = pre_existing;
     }
 
     //-------------------------- CONSTRUCTORS--------------------------------------//
@@ -162,11 +175,12 @@ public class Plant {
         this.planttype = planttype;
     }
 
-    public Plant(PlantSave ps) {
+    public Plant(PlantSaveLegacy ps) {
         this.planttype = ps.planttype;
         this.name = ps.name;
         this.location = ps.location;
         this.acqTyp = ps.acqType;
+        this.potsize = ps.potsize;
         this.log = new ArrayList<>();
         for(PlantLogItemSave plis: ps.log) {
             log.add(plis.typ == PlantLogItem.ItemType.ACTION ? PlantAction.fromSave(plis) : PlantEvent.fromSave(plis));
@@ -190,8 +204,40 @@ public class Plant {
             this.logPicPaths = ps.logpicpaths;
             this.logPicTS = ps.logpictimes;
         }
-        this.comment = ps.comment;
+        this.comments.add(new Comment(ps.comment, LocalDateTime.now()));
+    }
 
+    public Plant(PlantSave ps) {
+        this.planttype = ps.planttype;
+        this.name = ps.name;
+        this.location = ps.location;
+        this.acqTyp = ps.acqType;
+        this.potsize = ps.potsize;
+        this.log = new ArrayList<>();
+        for(PlantLogItemSave plis: ps.log) {
+            log.add(plis.typ == PlantLogItem.ItemType.ACTION ? PlantAction.fromSave(plis) : PlantEvent.fromSave(plis));
+        }
+        this.owned_since = ps.owned_since;
+        this.has_picture = ps.has_img;
+        if(has_picture) {
+            this.picture_path = ps.img_path;
+            File imgFile = new File(picture_path);
+            if(imgFile.exists()) {
+                Bitmap bm = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                if(bm != null) {
+                    this.profilepic = bm;
+                } else {
+                    Log.e("PLANTCONSTRUCT", "ERROR! image file exists, but created bitmap is null.");
+                }
+            } else {
+                Log.e("PLANTCONSTRUCT", "ERROR! has_picture is true but image file doesn't exist.");
+                has_picture = false;
+            }
+            this.logPicPaths = ps.logpicpaths;
+            this.logPicTS = ps.logpictimes;
+        }
+        this.comments = ps.comments;
+        this.pre_existing = ps.pre_existing;
     }
 
     //------------------------ CUSTOM FUNCS -------------------------------------//
@@ -201,7 +247,7 @@ public class Plant {
         for(PlantLogItem pli: log) {
             logsave.add(pli.toSave());
         }
-        return new PlantSave(potsize, owned_since, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comment);
+        return new PlantSave(potsize, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments);
     }
 
     public void water() {

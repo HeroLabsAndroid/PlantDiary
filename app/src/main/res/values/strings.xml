@@ -6,6 +6,7 @@
     <string name="PROMPT_defineplant_name">Name</string>
     <string name="PROMPT_defineplant_type">Typ</string>
     <string name="PROMPT_defineplant_acqtyp">Akquisitionsart</string>
+    <string name="PROMPT_defineplant_date">In Besitz seit</string>
 
     <string name="FLAG_err">"ERROR</string>
     <string name="PROMT_defineplant_comment">Kein Kommentar?</string>

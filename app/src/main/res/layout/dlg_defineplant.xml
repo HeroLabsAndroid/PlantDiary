@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <EditText
         android:id="@+id/ET_addplant_name"
@@ -64,7 +64,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/PROMPT_defineplant_acqtyp"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <RadioGroup
             android:id="@+id/RADGRP_addplant_acqtyp"
@@ -116,7 +118,7 @@
         android:id="@+id/BTN_addplant_takephoto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:backgroundTint="@color/DRK_ACC2"
         android:text="FOTTO!"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
@@ -135,12 +137,47 @@
         android:id="@+id/ET_addplant_comment"
         android:layout_width="196dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
+        android:maxLines="4"
         android:selectAllOnFocus="true"
         android:text="@string/PROMT_defineplant_comment"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
+        app:layout_constraintTop_toBottomOf="@+id/TV_addplant_commentcnt" />
+
+    <TextView
+        android:id="@+id/TV_addplant_commentcnt"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Kein Kommentar."
+        app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/BTN_addplant_addcomment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:src="@android:drawable/ic_input_add"
+        app:fabCustomSize="42dp"
+        app:fabSize="mini"
+        app:layout_constraintBottom_toBottomOf="@+id/ET_addplant_comment"
+        app:layout_constraintStart_toEndOf="@+id/ET_addplant_comment"
+        app:layout_constraintTop_toTopOf="@+id/ET_addplant_comment" />
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/CHP_addplant_preex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:checkable="true"
+        android:text="Pre-Existing?"
+        app:checkedIconVisible="true"
+        app:chipIconVisible="true"
+        app:layout_constraintBottom_toBottomOf="@+id/TV_addplant_ownedsince"
+        app:layout_constraintStart_toEndOf="@+id/TV_addplant_ownedsince"
+        app:layout_constraintTop_toTopOf="@+id/TV_addplant_ownedsince" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
