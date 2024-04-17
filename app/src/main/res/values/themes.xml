@@ -3,6 +3,8 @@
     <style name="Base.Theme.PlantDiary" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/DRK_PRIM</item>
+        <item name="colorSecondary">@color/DRK_SCND</item>
     </style>
 
     <style name="Theme.PlantDiary" parent="Base.Theme.PlantDiary" />

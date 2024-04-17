@@ -3,16 +3,19 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/DRK_BG_SHADE">
 
     <EditText
         android:id="@+id/ET_addplant_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_name"
+        android:textColor="@color/DRK_TXT"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -27,6 +30,7 @@
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_type"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_name"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_name" />
 
@@ -37,6 +41,7 @@
         android:layout_marginTop="8dp"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_location"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_type"
         app:layout_constraintTop_toBottomOf="@+id/CNSTRLYT_addplant_acqtyp" />
 
@@ -44,7 +49,7 @@
         android:id="@+id/BTN_addplant_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:text="Reinjebimst"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +68,9 @@
             android:id="@+id/TV_addplant_acqtyp_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:text="@string/PROMPT_defineplant_acqtyp"
+            android:textColor="@color/DRK_GRAYOUT"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -82,13 +89,17 @@
                 android:id="@+id/RADBTN_addplant_acqtyp_raised"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="selbst erschaffen" />
+                android:buttonTintMode="src_atop"
+                android:text="selbst erschaffen"
+                android:textColor="@color/DRK_TXT"
+                app:useMaterialThemeColors="false" />
 
             <RadioButton
                 android:id="@+id/RADBTN_addplant_acqtyp_adopted"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="adoptiert" />
+                android:text="adoptiert"
+                android:textColor="@color/DRK_TXT" />
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -101,6 +112,7 @@
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_potsize"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_loc"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_loc" />
 
@@ -110,6 +122,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="datum"
+        android:textColor="@color/DRK_GRAYOUT"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_potsize"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_potsize" />
@@ -143,6 +156,7 @@
         android:maxLines="4"
         android:selectAllOnFocus="true"
         android:text="@string/PROMT_defineplant_comment"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toBottomOf="@+id/TV_addplant_commentcnt" />
 
@@ -152,6 +166,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Kein Kommentar."
+        android:textColor="@color/DRK_GRAYOUT"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
 
@@ -161,6 +176,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:src="@android:drawable/ic_input_add"
+        app:backgroundTint="@color/DRK_ACC4"
         app:fabCustomSize="42dp"
         app:fabSize="mini"
         app:layout_constraintBottom_toBottomOf="@+id/ET_addplant_comment"

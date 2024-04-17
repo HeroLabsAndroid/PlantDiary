@@ -15,7 +15,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantdiary.R;
 import com.example.plantdiary.Util;
+import com.example.plantdiary.dialog.AttachCommentDialog;
 import com.example.plantdiary.plant.Plant;
+import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,7 +25,9 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> {
+public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> implements AttachCommentDialog.AttachCommentListener{
+
+
 
     //--------------- INTERFACES ---------------------------------//
 
@@ -34,6 +38,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
     public interface PlantEditDialogLauncher {
         void startPlantEditDialog(int plantidx);
         void startPlantActivity(int plantidx);
+
+        void startAttachCommentDialog(int plantidx);
     }
 
     //---------------- VARS ------------------------------------//
@@ -96,6 +102,10 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
         pedLaunch.startPlantActivity(holder.getAdapterPosition());
     }
 
+    public void launchAttachCommentDialog(ViewHolder holder) {
+        pedLaunch.startAttachCommentDialog(holder.getAdapterPosition());
+    }
+
     public void setBitmap(ViewHolder holder) {
         Bitmap bm = Util.RotateBitmap(localDataSet.get(holder.getAdapterPosition()).getProfilepic(), 90);
         int height = (int)ctx.getResources().getDimension(R.dimen.MAINGRID_PIC_HEIGHT);
@@ -114,6 +124,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
                 break;
             case FERTILIZE:
                 fertilizePlant(holder);
+                break;
+            case PLANTCOMMENT:
+                launchAttachCommentDialog(holder);
         }
     }
 
@@ -183,6 +196,14 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
     public int getItemCount() {
         return localDataSet.size();
     }
+
+    @Override
+    public void attachComment(Comment cmt, int idx) {
+        localDataSet.get(idx).getComments().add(cmt);
+        notifyItemChanged(idx);
+    }
+
+
 
     //----------------- VIEWHOLDER ---------------------------------//
 

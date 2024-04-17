@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/DRK_BG_SHADE"
+    android:padding="16dp">
+
+    <EditText
+        android:id="@+id/ET_dlg_attachcomment"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="Name"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/BTN_dlg_attachcomment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/DRK_ACC2"
+        android:text="gib iihr"
+        app:layout_constraintEnd_toEndOf="@+id/ET_dlg_attachcomment"
+        app:layout_constraintStart_toStartOf="@+id/ET_dlg_attachcomment"
+        app:layout_constraintTop_toBottomOf="@+id/ET_dlg_attachcomment" />
+</androidx.constraintlayout.widget.ConstraintLayout>

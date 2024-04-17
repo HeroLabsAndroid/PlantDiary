@@ -25,7 +25,7 @@ import com.example.plantdiary.plant.Plant;
 
 import java.util.Locale;
 
-public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.ItemRemovedListener, PlantRollActivity.PlantRollListener {
+public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.ItemRemovedListener, PlantRollActivity.PlantRollListener, CommentAdapter.CommentRemovedListener {
 
 
     //-------------- INTERFACES ----------------------------------//
@@ -240,5 +240,10 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
                 plant = new Plant((PlantSave)data.getExtras().getSerializable("plantret"));
             }
         }
+    }
+
+    @Override
+    public void onCommentRemoved(int idx) {
+        tvLog.setText(String.format(Locale.getDefault(), "Commies: \r\n(%d Items)", plant.getComments().size()));
     }
 }

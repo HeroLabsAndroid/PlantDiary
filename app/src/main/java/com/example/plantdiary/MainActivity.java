@@ -2,6 +2,8 @@ package com.example.plantdiary;
 
 import static androidx.core.app.ActivityCompat.startActivityForResult;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -13,10 +15,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.plantdiary.datadapt.PlantAdapter;
+import com.example.plantdiary.dialog.AttachCommentDialog;
 import com.example.plantdiary.dialog.NewPlantDialog;
 import com.example.plantdiary.io.PlantDiaryIO;
 import com.example.plantdiary.io.PlantSave;
@@ -34,13 +39,18 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     final boolean LOAD_LEGACY = false;
 
     //------------- VIEWS -------------------------------------------//
-    Button newPlantBtn, waterBtn, fertBtn;
+    Button newPlantBtn, waterBtn, fertBtn, commentBtn;
+
+    ConstraintLayout controlsCLYT;
+
+    SwitchCompat showCtrlSWTC;
 
     TextView plantcntTv;
     RecyclerView plantRecView;
 
     //------------- VARS -------------------------------------------//
 
+    boolean show_ctrls = false;
 
     ArrayList<Plant> plants = new ArrayList<>();
 
@@ -56,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         FragmentManager fragMan = getSupportFragmentManager();
         NewPlantDialog newPlantDial = new NewPlantDialog(this, plants.get(idx), idx);
         newPlantDial.show(fragMan, "newplantdial");
+    }
+
+    void launchAttachCommentDialog(int plantidx) {
+        FragmentManager fragMan = getSupportFragmentManager();
+        AttachCommentDialog acDial = new AttachCommentDialog((AttachCommentDialog.AttachCommentListener) plantRecView.getAdapter(), plantidx);
+        acDial.show(fragMan, "attachcomment");
     }
 
     public void launchPlantActivity(int plantidx) {
@@ -81,14 +97,22 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
             case WATER:
                 waterBtn.setBackgroundColor(getColor(R.color.DRK_ACC4));
                 fertBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
+                commentBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
                 break;
             case FERTILIZE:
                 waterBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
                 fertBtn.setBackgroundColor(getColor(R.color.DRK_ACC5));
+                commentBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
+                break;
+            case PLANTCOMMENT:
+                waterBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
+                fertBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
+                commentBtn.setBackgroundColor(getColor(R.color.DRK_ACC6));
                 break;
             default:
                 waterBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
                 fertBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
+                commentBtn.setBackgroundColor(getColor(R.color.DRK_GRAYOUT));
                 break;
         }
     }
@@ -112,6 +136,11 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         fertBtn = findViewById(R.id.BTN_fertilize);
         plantRecView = findViewById(R.id.RCLVW_plants);
         plantcntTv = findViewById(R.id.TV_main_plantcnt);
+        controlsCLYT = findViewById(R.id.CSTRLYT_plantactions);
+        showCtrlSWTC = findViewById(R.id.SWTCH_show_actions);
+        commentBtn = findViewById(R.id.BTN_comment);
+
+        controlsCLYT.setVisibility(View.GONE);
 
         plantRecView.setLayoutManager(new GridLayoutManager(this, 2));
         PlantAdapter plAdapt = new PlantAdapter(this, plants);
@@ -136,6 +165,26 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
             @Override
             public void onClick(View v) {
                 switchSelectedAction(PlantActionType.FERTILIZE);
+            }
+        });
+
+        commentBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchSelectedAction(PlantActionType.PLANTCOMMENT);
+            }
+        });
+
+        showCtrlSWTC.setChecked(false);
+        showCtrlSWTC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                show_ctrls = isChecked;
+                if(show_ctrls) controlsCLYT.setVisibility(View.VISIBLE);
+                else {
+                    controlsCLYT.setVisibility(View.GONE);
+                    switchSelectedAction(PlantActionType.NONE);
+                }
             }
         });
 
@@ -195,6 +244,11 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     @Override
     public void startPlantActivity(int plantidx) {
         launchPlantActivity(plantidx);
+    }
+
+    @Override
+    public void startAttachCommentDialog(int plantidx) {
+        launchAttachCommentDialog(plantidx);
     }
 
     @Override

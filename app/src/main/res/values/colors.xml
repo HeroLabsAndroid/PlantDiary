@@ -3,11 +3,21 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="DRK_BG_MAIN">#FF4F6F67</color>
+    <color name="DRK_BG_SHADE">#FF2D3F47</color>
+
+    <color name="DRK_PRIM">#FFC475D0</color>
+    <color name="DRK_SCND">#FF453A5A</color>
+
+    <color name="DRK_TXT">#FFFAFAEB</color>
+    <color name="DRK_TXT_INV">#FF262A40</color>
+
     <color name="DRK_ACC1">#FFDE1F3C</color>
     <color name="DRK_ACC2">#FF7CA4D9</color>
-    <color name="DRK_ACC3">#FF54DB81</color>
+    <color name="DRK_ACC3">#FF9AFC5D</color>
 
-    <color name="DRK_ACC4">#FF4774D5</color>
+    <color name="DRK_ACC4">#FF4FA3C7</color>
     <color name="DRK_ACC5">#FFD54780</color>
-    <color name="DRK_GRAYOUT">#FFE1CBF5</color>
+    <color name="DRK_ACC6">#FF9CBF5C</color>
+    <color name="DRK_GRAYOUT">#FF93CEC0</color>
 </resources>

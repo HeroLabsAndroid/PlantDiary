@@ -3,14 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/DRK_BG_SHADE">
 
     <TextView
         android:id="@+id/TV_lstitm_plantlog_actev"
         android:layout_width="64dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
         android:text="TextView"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="TextView"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toEndOf="@+id/TV_lstitm_plantlog_actev"
         app:layout_constraintTop_toTopOf="@+id/TV_lstitm_plantlog_actev" />
 
@@ -29,6 +33,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:text="TextView"
+        android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toEndOf="@+id/TV_listitm_plantlog_type"
         app:layout_constraintTop_toTopOf="@+id/TV_listitm_plantlog_type" />
 
@@ -47,4 +52,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TV_lstitm_plantlog_timestamp"
         app:layout_constraintTop_toTopOf="@+id/TV_lstitm_plantlog_actev" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_marginTop="24dp"
+        android:background="@color/DRK_BG_MAIN"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_lstitm_plantlog_timestamp">
+
+    </FrameLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

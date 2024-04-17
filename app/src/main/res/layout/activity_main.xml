@@ -4,14 +4,57 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/DRK_BG_MAIN"
     tools:context=".MainActivity">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CSTRLYT_plantactions"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="16dp"
+        app:layout_constraintBottom_toTopOf="@+id/BTN_newplant"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/BTN_comment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:backgroundTint="@color/DRK_GRAYOUT"
+            android:text="Commie"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_water"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:backgroundTint="@color/DRK_GRAYOUT"
+            android:text="mmh wortor"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_fertilize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/DRK_GRAYOUT"
+            android:text="Dung"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/BTN_comment"
+            app:layout_constraintStart_toEndOf="@+id/BTN_water"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCLVW_plants"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/TV_main_plantcnt"
+        app:layout_constraintBottom_toTopOf="@+id/CSTRLYT_plantactions"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -23,36 +66,34 @@
         android:layout_marginBottom="16dp"
         android:backgroundTint="@color/DRK_ACC3"
         android:text="Mach neu"
+        android:textColor="@color/DRK_TXT_INV"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/TV_main_plantcnt" />
+        app:layout_constraintEnd_toStartOf="@+id/TV_main_plantcnt"
+        app:layout_constraintStart_toEndOf="@+id/SWTCH_show_actions" />
 
     <TextView
         android:id="@+id/TV_main_plantcnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginEnd="16dp"
         android:text="TextView"
-        app:layout_constraintBottom_toTopOf="@+id/BTN_newplant"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/BTN_water"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="@color/DRK_GRAYOUT"
-        android:text="mmh wortor"
-        app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_newplant"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
 
-    <Button
-        android:id="@+id/BTN_fertilize"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/SWTCH_show_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:backgroundTint="@color/DRK_GRAYOUT"
-        android:text="Dung"
-        app:layout_constraintStart_toEndOf="@+id/BTN_water"
-        app:layout_constraintTop_toTopOf="@+id/BTN_water" />
+        android:layout_marginStart="16dp"
+        android:text="Akt ;)   "
+        android:textAlignment="viewStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_newplant"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/BTN_newplant"
+        app:thumbTint="@color/DRK_ACC2"
+        app:trackTint="@color/DRK_TXT" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
