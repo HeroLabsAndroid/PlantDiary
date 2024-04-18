@@ -7,12 +7,14 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +31,7 @@ import com.example.plantdiary.io.PlantEventSave;
 import com.example.plantdiary.plant.AcquisitionType;
 import com.example.plantdiary.plant.Plant;
 import com.example.plantdiary.plantaction.Comment;
+import com.example.plantdiary.plantaction.LifeCycleStage;
 import com.example.plantdiary.plantaction.PlantEvent;
 import com.example.plantdiary.plantaction.PlantEventType;
 import com.example.plantdiary.plantaction.PlantLogItem;
@@ -76,6 +79,8 @@ public class NewPlantDialog extends DialogFragment {
     RadioGroup acqTypeRADGRP;
     RadioButton typeAdoptedRADBUTT, typeRaisedRADBUTT;
 
+    Spinner lifecycSPN;
+
     //----------- FUNCTIONS ---------------------------------------------//
 
     boolean takeProfilePic() {
@@ -114,7 +119,9 @@ public class NewPlantDialog extends DialogFragment {
                     typeET.getText().toString(),
                     typeAdoptedRADBUTT.isChecked() ? AcquisitionType.ADOPTED : AcquisitionType.SELFRAISED);
             plant.setOwned_since(LocalDate.now());
-            plant.setComments(cmt);
+            for(Comment c: cmt) {
+                plant.getComments().add(c);
+            }
         } else {
             if(plant.getName().compareTo(nameET.getText().toString())!=0) {
                 PlantEvent pe = new PlantEvent(LocalDateTime.now());
@@ -127,6 +134,12 @@ public class NewPlantDialog extends DialogFragment {
             plant.setComments(cmt);
         }
 
+        if(edit_mode && plant.getLifestage()!=LifeCycleStage.fromOrdinal(lifecycSPN.getSelectedItemPosition())) {
+            PlantEvent pe = new PlantEvent(LocalDateTime.now());
+            pe.setPet(PlantEventType.GROWN);
+            plant.getLog().add(pe);
+        }
+        plant.setLifestage(LifeCycleStage.fromOrdinal(lifecycSPN.getSelectedItemPosition()));
 
         if(edit_mode && plant.getLocation().compareTo(locET.getText().toString())!=0) {
             PlantEvent pe = new PlantEvent(LocalDateTime.now());
@@ -164,6 +177,14 @@ public class NewPlantDialog extends DialogFragment {
         return plant;
     }
 
+    void applyDefaultLifeStage() {
+        plant.setLifestage(LifeCycleStage.SEED);
+    }
+
+    void applyLifeStage(LifeCycleStage lcs) {
+        plant.setLifestage(lcs);
+    }
+
     void fillDialogFromPlant(Plant p) {
         nameET.setText(p.getName());
 
@@ -187,6 +208,8 @@ public class NewPlantDialog extends DialogFragment {
 
         cmt = p.getComments();
         commentcntTV.setText(String.format(Locale.getDefault(), "%d Kommis", cmt.size()));
+
+        lifecycSPN.setSelection(p.getLifestage().ordinal());
     }
 
     void addComment() {
@@ -253,6 +276,8 @@ public class NewPlantDialog extends DialogFragment {
 
         preexCHIP = layout.findViewById(R.id.CHP_addplant_preex);
 
+        lifecycSPN = layout.findViewById(R.id.SPN_addplant_lifecycle);
+
         photoBUTT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -274,8 +299,23 @@ public class NewPlantDialog extends DialogFragment {
                 addComment();
             }
         });
+        ArrayAdapter<String> lifecycarr = new ArrayAdapter<String>(requireContext(), R.layout.spnitm_lifecycle, LifeCycleStage.getStages());
+        lifecycarr.setDropDownViewResource(R.layout.spnitm_lifecycle);
+        lifecycSPN.setAdapter(lifecycarr);
+        lifecycSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+               // applyLifeStage(LifeCycleStage.fromOrdinal(position));
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                //applyDefaultLifeStage();
+            }
+        });
 
         if(edit_mode) fillDialogFromPlant(plant);
+
 
         return builder.create();
     }

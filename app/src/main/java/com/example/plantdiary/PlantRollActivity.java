@@ -2,12 +2,9 @@ package com.example.plantdiary;
 
 import static com.example.plantdiary.cam.CamOps.REQUEST_IMAGE_CAPTURE;
 
-import static java.security.AccessController.getContext;
-
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
@@ -21,7 +18,6 @@ import android.widget.TextView;
 import com.example.plantdiary.cam.BitmapAndPath;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
 import com.example.plantdiary.cam.CamOps;
-import com.example.plantdiary.cam.PathAndTimestamp;
 import com.example.plantdiary.datadapt.PlantRollAdapter;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
@@ -97,8 +93,8 @@ public class PlantRollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant_roll);
 
         btnAddPhoto = findViewById(R.id.BTN_plantroll_addphoto);
-        rclvPhoto = findViewById(R.id.RCLV_plantroll_photos);
-        tvPhotoCnt = findViewById(R.id.TV_plantroll_photocnt);
+        rclvPhoto = findViewById(R.id.RCLV_deadplants);
+        tvPhotoCnt = findViewById(R.id.TV_deadplant_cntcnt);
 
         Intent intent = getIntent();
 

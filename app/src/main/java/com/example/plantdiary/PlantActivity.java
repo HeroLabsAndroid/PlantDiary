@@ -44,9 +44,9 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
     int plantidx;
 
     RecyclerView rclvLog;
-    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclDate;
+    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclDate, inclStage;
 
-    TextView tvTit_Type, tvVal_Type, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_date, tvVal_date;
+    TextView tvTit_Type, tvVal_Type, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_date, tvVal_date, tvTit_stage, tvVal_stage;
 
     TextView tvName;
 
@@ -86,6 +86,8 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
         tvVal_actyp.setText(plant.getAcqTyp().toString());
 
+        tvVal_stage.setText(plant.getLifestage().toString());
+
         if(plant.hasPicture()) {
             Bitmap bm = Util.RotateBitmap(plant.getProfilepic(), 90);
             ivProfPic.setImageBitmap(bm);
@@ -123,6 +125,8 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
                 setRecViewMode(show_log);
             }
         });
+
+
     }
 
     void launchPlantActivity() {
@@ -135,29 +139,34 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         tvName = findViewById(R.id.TV_plant_name);
 
         inclType = findViewById(R.id.INCL_TITVAL_type);
-        tvTit_Type = inclType.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_Type = inclType.findViewById(R.id.TV_incl_titvalsmol_tit);
         tvTit_Type.setText(getString(R.string.PROMPT_defineplant_type));
-        tvVal_Type = inclType.findViewById(R.id.TV_incl_titval_val);
+        tvVal_Type = inclType.findViewById(R.id.TV_incl_titvalsmol_val);
 
         inclLoc = findViewById(R.id.INCL_TITVAL_loc);
-        tvTit_Loc = inclLoc.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_Loc = inclLoc.findViewById(R.id.TV_incl_titvalsmol_tit);
         tvTit_Loc.setText(getString(R.string.PROMPT_defineplant_location));
-        tvVal_Loc = inclLoc.findViewById(R.id.TV_incl_titval_val);
+        tvVal_Loc = inclLoc.findViewById(R.id.TV_incl_titvalsmol_val);
 
         inclPotsize = findViewById(R.id.INCL_TITVAL_potsz);
-        tvTit_potsz = inclPotsize.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_potsz = inclPotsize.findViewById(R.id.TV_incl_titvalsmol_tit);
         tvTit_potsz.setText(getString(R.string.PROMPT_defineplant_potsize));
-        tvVal_potsz = inclPotsize.findViewById(R.id.TV_incl_titval_val);
+        tvVal_potsz = inclPotsize.findViewById(R.id.TV_incl_titvalsmol_val);
 
         inclAcqtyp = findViewById(R.id.INCL_TITVAL_actyp);
-        tvTit_actyp = inclAcqtyp.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_actyp = inclAcqtyp.findViewById(R.id.TV_incl_titvalsmol_tit);
         tvTit_actyp.setText(getString(R.string.PROMPT_defineplant_acqtyp));
-        tvVal_actyp = inclAcqtyp.findViewById(R.id.TV_incl_titval_val);
+        tvVal_actyp = inclAcqtyp.findViewById(R.id.TV_incl_titvalsmol_val);
 
         inclDate = findViewById(R.id.INCL_TITVAL_ownedsince);
-        tvTit_date = inclDate.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_date = inclDate.findViewById(R.id.TV_incl_titvalsmol_tit);
         tvTit_date.setText(getString(R.string.PROMPT_defineplant_date));
-        tvVal_date = inclDate.findViewById(R.id.TV_incl_titval_val);
+        tvVal_date = inclDate.findViewById(R.id.TV_incl_titvalsmol_val);
+
+        inclStage = findViewById(R.id.INCL_TITVAL_S_stage);
+        tvTit_stage = inclStage.findViewById(R.id.TV_incl_titvalsmol_tit);
+        tvTit_stage.setText(getString(R.string.PROMPT_defineplant_stage));
+        tvVal_stage = inclStage.findViewById(R.id.TV_incl_titvalsmol_val);
 
         ivProfPic = findViewById(R.id.IV_plant_profpic);
 

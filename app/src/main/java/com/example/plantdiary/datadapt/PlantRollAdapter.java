@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -16,9 +15,6 @@ import com.example.plantdiary.R;
 import com.example.plantdiary.Util;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
 import com.example.plantdiary.dialog.ShowPhotoDialog;
-import com.example.plantdiary.plantaction.PlantAction;
-import com.example.plantdiary.plantaction.PlantEvent;
-import com.example.plantdiary.plantaction.PlantLogItem;
 
 import java.util.ArrayList;
 
@@ -94,7 +90,7 @@ public class PlantRollAdapter extends RecyclerView.Adapter<PlantRollAdapter.View
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            tvTS = itemView.findViewById(R.id.TV_grditm_plantroll_ts);
+            tvTS = itemView.findViewById(R.id.TV_grditm_plantroll_name);
             ivPhoto = itemView.findViewById(R.id.IV_grditm_plantroll_photo);
         }
     }

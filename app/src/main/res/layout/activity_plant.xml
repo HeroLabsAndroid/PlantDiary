@@ -7,6 +7,16 @@
     android:background="@color/DRK_BG_MAIN"
     tools:context=".PlantActivity">
 
+    <include
+        android:id="@+id/INCL_TITVAL_S_stage"
+        layout="@layout/incl_title_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/INCL_TITVAL_type"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_type"
+        app:layout_constraintTop_toBottomOf="@+id/IV_plant_profpic" />
+
     <TextView
         android:id="@+id/TV_plant_name"
         android:layout_width="wrap_content"
@@ -25,9 +35,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/IV_plant_profpic" />
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_S_stage" />
 
     <include
         android:id="@+id/INCL_TITVAL_loc"
@@ -122,7 +131,6 @@
         android:layout_height="wrap_content"
         android:backgroundTint="@color/DRK_ACC2"
         android:text="Fotoschnecke"
-        app:layout_constraintBottom_toBottomOf="@+id/IV_plant_profpic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/IV_plant_profpic"
         app:layout_constraintTop_toTopOf="@+id/IV_plant_profpic" />

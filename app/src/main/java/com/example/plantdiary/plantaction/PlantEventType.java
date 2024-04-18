@@ -3,7 +3,7 @@ package com.example.plantdiary.plantaction;
 import androidx.annotation.NonNull;
 
 public enum PlantEventType {
-    REPOT, RELOCATE, RENAME, NEWCOMMENT, DIED;
+    REPOT, RELOCATE, RENAME, NEWCOMMENT, DIED, GROWN;
     @NonNull
     @Override
     public String toString() {
@@ -16,6 +16,8 @@ public enum PlantEventType {
                 return "Umgezogen";
             case NEWCOMMENT:
                 return "Neuer Kommentar";
+            case GROWN:
+                return "Gewachsen";
             default:
                 return "Gestorben";
         }

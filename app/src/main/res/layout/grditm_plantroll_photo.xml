@@ -20,7 +20,7 @@
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
     <TextView
-        android:id="@+id/TV_grditm_plantroll_ts"
+        android:id="@+id/TV_grditm_plantroll_name"
         android:layout_width="@dimen/ROLL_PIC_HEIGHT"
         android:layout_height="wrap_content"
         android:background="@color/DRK_BG_MAIN"

@@ -22,10 +22,13 @@ import android.widget.Toast;
 
 import com.example.plantdiary.datadapt.PlantAdapter;
 import com.example.plantdiary.dialog.AttachCommentDialog;
+import com.example.plantdiary.dialog.CauseOfDeathDialog;
 import com.example.plantdiary.dialog.NewPlantDialog;
+import com.example.plantdiary.io.DeadPlant;
 import com.example.plantdiary.io.PlantDiaryIO;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
+import com.example.plantdiary.plantaction.CauseOfDeath;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -33,13 +36,13 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NewPlantDialog.PlantAddedListener, PlantAdapter.PlantRemovedListener, PlantAdapter.PlantEditDialogLauncher {
+public class MainActivity extends AppCompatActivity implements NewPlantDialog.PlantAddedListener, PlantAdapter.PlantRemovedListener, PlantAdapter.PlantEditDialogLauncher, CauseOfDeathDialog.CauseOfDeathListener {
     //------------ CONST ---------------------------------------------//
 
     final boolean LOAD_LEGACY = false;
 
     //------------- VIEWS -------------------------------------------//
-    Button newPlantBtn, waterBtn, fertBtn, commentBtn;
+    Button newPlantBtn, waterBtn, fertBtn, commentBtn, fallenComradesBtn;
 
     ConstraintLayout controlsCLYT;
 
@@ -54,8 +57,17 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
 
     ArrayList<Plant> plants = new ArrayList<>();
 
+    ArrayList<DeadPlant> fallen_brothers = new ArrayList<>();
+
 
     //------------- CUSTOM FUNCS -------------------------------------------//
+
+    void launchDeadPlantActivity() {
+        PlantDiaryIO.saveData(this, plants);
+        Intent plantIntent = new Intent(MainActivity.this, DeadPlantActivity.class);
+        ActivityCompat.startActivity(this, plantIntent, null);
+    }
+
     void showNewPlantDialog() {
         FragmentManager fragMan = getSupportFragmentManager();
         NewPlantDialog newPlantDial = new NewPlantDialog(this);
@@ -64,7 +76,8 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
 
     void showEditPlantDialog(int idx) {
         FragmentManager fragMan = getSupportFragmentManager();
-        NewPlantDialog newPlantDial = new NewPlantDialog(this, plants.get(idx), idx);
+        Plant toEdit = plants.get(idx);
+        NewPlantDialog newPlantDial = new NewPlantDialog(this, toEdit, idx);
         newPlantDial.show(fragMan, "newplantdial");
     }
 
@@ -124,12 +137,13 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         setContentView(R.layout.activity_main);
 
 
-        if(LOAD_LEGACY) {
+        /*if(LOAD_LEGACY) {
             plants = PlantDiaryIO.loadLegacyData(this);
             PlantDiaryIO.saveData(this, plants);
             finish();
-        }
+        }*/
         plants = PlantDiaryIO.loadData(this);
+        fallen_brothers = PlantDiaryIO.loadDeadPlants(this);
 
         newPlantBtn = findViewById(R.id.BTN_newplant);
         waterBtn = findViewById(R.id.BTN_water);
@@ -139,6 +153,8 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         controlsCLYT = findViewById(R.id.CSTRLYT_plantactions);
         showCtrlSWTC = findViewById(R.id.SWTCH_show_actions);
         commentBtn = findViewById(R.id.BTN_comment);
+        fallenComradesBtn = findViewById(R.id.BTN_main_fallencomrades);
+
 
         controlsCLYT.setVisibility(View.GONE);
 
@@ -188,6 +204,13 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
             }
         });
 
+        fallenComradesBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                launchDeadPlantActivity();
+            }
+        });
+
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen", plants.size()));
     }
 
@@ -199,16 +222,21 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
 
     @Override
     public void onPlantAdded(Plant plant) {
-        plants.add(plant);
-        plantRecView.getAdapter().notifyItemInserted(plants.size()-1);
-        plantRecView.getAdapter().notifyItemRangeChanged(plants.size()-1, 1);
+        int pos = 0;
+        while(pos < plants.size() && plants.get(pos).compareTo(plant)<0) {
+            pos++;
+        }
+        plants.add(pos, plant);
+        plantRecView.getAdapter().notifyItemInserted(pos);
+        plantRecView.getAdapter().notifyItemRangeChanged(pos, 1);
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
     }
 
     @Override
     public void onPlantChanged(Plant plant, int pos) {
         plants.set(pos, plant);
-
+        plantRecView.getAdapter().notifyItemChanged(pos);
+        plantRecView.getAdapter().notifyItemRangeChanged(pos, 1);
     }
     @Override
     public boolean plantNameTaken(String name) {
@@ -223,12 +251,14 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     }
 
     @Override
-    public void onPlantRemoved(Plant p) {
-        plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
+    public void onPlantRemoved(Plant p, int plantidx) {
+        CauseOfDeathDialog codDial = new CauseOfDeathDialog(this, plantidx, p);
+        codDial.show(getSupportFragmentManager(), "slctcod");
+      /*  plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
         if(p.hasPicture()) {
             File imgPath = new File(p.getPicture_path());
             if(imgPath.exists()) imgPath.delete();
-        }
+        }*/
     }
 
     @Override
@@ -292,5 +322,20 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
             Toast.makeText(this, errstr,
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onCauseSelected(Plant plant, int plantidx, CauseOfDeath cod) {
+        plants.remove(plantidx);
+        plantRecView.getAdapter().notifyItemRemoved(plantidx);
+
+        plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
+        for(String s: plant.getLogPicPaths()) {
+            File imgPath = new File(s);
+            if(imgPath.exists()) imgPath.delete();
+        }
+
+        fallen_brothers.add(new DeadPlant(plant, cod));
+        PlantDiaryIO.saveDeadPlants(this, fallen_brothers);
     }
 }

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/DRK_BG_SHADE"
+    android:padding="4dp"
+    android:paddingBottom="16dp">
+
+    <TextView
+        android:id="@+id/TV_grditm_deadplant_name"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="wrap_content"
+        android:background="@color/DRK_BG_MAIN"
+        android:padding="2dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="@+id/IV_grditm_deadplant_photo"
+        app:layout_constraintStart_toStartOf="@+id/IV_grditm_plantroll_photo"
+        app:layout_constraintTop_toBottomOf="@+id/IV_grditm_deadplant_photo" />
+
+    <TextView
+        android:id="@+id/TV_grditm_deadplant_type"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="wrap_content"
+        android:background="@color/DRK_BG_MAIN"
+        android:padding="2dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="@+id/TV_grditm_deadplant_name"
+        app:layout_constraintStart_toStartOf="@+id/TV_grditm_deadplant_name"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_deadplant_name" />
+
+    <TextView
+        android:id="@+id/TV_grditm_deadplant_timeframe"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="wrap_content"
+        android:background="@color/DRK_BG_MAIN"
+        android:padding="2dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="@+id/TV_grditm_deadplant_type"
+        app:layout_constraintStart_toStartOf="@+id/TV_grditm_deadplant_type"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_deadplant_type" />
+
+    <TextView
+        android:id="@+id/TV_grditm_deadplant_cod"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="wrap_content"
+        android:background="@color/DRK_BG_MAIN"
+        android:padding="2dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="@+id/TV_grditm_deadplant_timeframe"
+        app:layout_constraintStart_toStartOf="@+id/TV_grditm_deadplant_timeframe"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_deadplant_timeframe" />
+
+    <TextView
+        android:id="@+id/TV_grditm_deadplant_lifecyclestate"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="wrap_content"
+        android:background="@color/DRK_BG_MAIN"
+        android:padding="2dp"
+        android:text="TextView"
+        android:textAlignment="textStart"
+        android:textColor="@color/DRK_TXT"
+        app:layout_constraintEnd_toEndOf="@+id/IV_grditm_deadplant_photo"
+        app:layout_constraintStart_toStartOf="@+id/IV_grditm_deadplant_photo"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_deadplant_cod" />
+
+    <ImageView
+        android:id="@+id/IV_grditm_deadplant_photo"
+        android:layout_width="@dimen/ROLL_PIC_HEIGHT"
+        android:layout_height="@dimen/ROLL_PIC_HEIGHT"
+        android:background="@color/DRK_BG_SHADE"
+        android:padding="2dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <Button
+        android:id="@+id/BTN_grditm_deadplant_yeet"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/DRK_ACC1"
+        android:text="goodbye"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_deadplant_lifecyclestate" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

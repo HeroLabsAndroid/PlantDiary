@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DRK_BG_SHADE">
+    android:background="@color/DRK_BG_SHADE"
+    android:scrollbars="vertical">
 
     <EditText
         android:id="@+id/ET_addplant_name"
@@ -38,12 +39,12 @@
         android:id="@+id/ET_addplant_loc"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_location"
         android:textColor="@color/DRK_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_type"
-        app:layout_constraintTop_toBottomOf="@+id/CNSTRLYT_addplant_acqtyp" />
+        app:layout_constraintTop_toBottomOf="@+id/SPN_addplant_lifecycle" />
 
     <Button
         android:id="@+id/BTN_addplant_confirm"
@@ -195,5 +196,14 @@
         app:layout_constraintBottom_toBottomOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintStart_toEndOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toTopOf="@+id/TV_addplant_ownedsince" />
+
+    <Spinner
+        android:id="@+id/SPN_addplant_lifecycle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="@+id/ET_addplant_loc"
+        app:layout_constraintTop_toBottomOf="@+id/CNSTRLYT_addplant_acqtyp"
+        tools:listitem="@layout/spnitm_lifecycle" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

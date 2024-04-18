@@ -2,28 +2,26 @@ package com.example.plantdiary.plant;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.util.Log;
 
-import com.example.plantdiary.Util;
-import com.example.plantdiary.io.PlantActionSave;
-import com.example.plantdiary.io.PlantEventSave;
 import com.example.plantdiary.io.PlantLogItemSave;
 import com.example.plantdiary.io.PlantSave;
-import com.example.plantdiary.io.PlantSaveLegacy;
+import com.example.plantdiary.plantaction.CauseOfDeath;
 import com.example.plantdiary.plantaction.Comment;
+import com.example.plantdiary.plantaction.LifeCycleStage;
 import com.example.plantdiary.plantaction.PlantAction;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.example.plantdiary.plantaction.PlantEvent;
 import com.example.plantdiary.plantaction.PlantLogItem;
 
 import java.io.File;
-import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
-public class Plant {
+public class Plant implements Comparable<Plant>{
 
     //-------------- VARS -------------------------- //
     private float potsize;
@@ -41,6 +39,8 @@ public class Plant {
 
     private ArrayList<PlantLogItem> log = new ArrayList<>();
 
+    private CauseOfDeath deathcause = CauseOfDeath.NONE;
+
     private Bitmap profilepic;
 
     private String picture_path;
@@ -49,6 +49,11 @@ public class Plant {
     private ArrayList<LocalDateTime> logPicTS = new ArrayList<>();
     private boolean has_picture = false;
 
+    private boolean has_fruits = false;
+
+    private boolean has_flowers = false;
+
+    private LifeCycleStage lifestage = LifeCycleStage.GROWN;
 
 
     //--------------------------GETTERS AND SETTERS------------------------------------//
@@ -162,6 +167,38 @@ public class Plant {
         this.pre_existing = pre_existing;
     }
 
+    public CauseOfDeath getDeathcause() {
+        return deathcause;
+    }
+
+    public void setDeathcause(CauseOfDeath deathcause) {
+        this.deathcause = deathcause;
+    }
+
+    public boolean isHas_fruits() {
+        return has_fruits;
+    }
+
+    public void setHas_fruits(boolean has_fruits) {
+        this.has_fruits = has_fruits;
+    }
+
+    public boolean isHas_flowers() {
+        return has_flowers;
+    }
+
+    public void setHas_flowers(boolean has_flowers) {
+        this.has_flowers = has_flowers;
+    }
+
+    public LifeCycleStage getLifestage() {
+        return lifestage;
+    }
+
+    public void setLifestage(LifeCycleStage lifestage) {
+        this.lifestage = lifestage;
+    }
+
     //-------------------------- CONSTRUCTORS--------------------------------------//
 
     public Plant(String name, AcquisitionType act) {
@@ -175,37 +212,7 @@ public class Plant {
         this.planttype = planttype;
     }
 
-    public Plant(PlantSaveLegacy ps) {
-        this.planttype = ps.planttype;
-        this.name = ps.name;
-        this.location = ps.location;
-        this.acqTyp = ps.acqType;
-        this.potsize = ps.potsize;
-        this.log = new ArrayList<>();
-        for(PlantLogItemSave plis: ps.log) {
-            log.add(plis.typ == PlantLogItem.ItemType.ACTION ? PlantAction.fromSave(plis) : PlantEvent.fromSave(plis));
-        }
-        this.owned_since = ps.owned_since;
-        this.has_picture = ps.has_img;
-        if(has_picture) {
-            this.picture_path = ps.img_path;
-            File imgFile = new File(picture_path);
-            if(imgFile.exists()) {
-                Bitmap bm = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-                if(bm != null) {
-                    this.profilepic = bm;
-                } else {
-                    Log.e("PLANTCONSTRUCT", "ERROR! image file exists, but created bitmap is null.");
-                }
-            } else {
-                Log.e("PLANTCONSTRUCT", "ERROR! has_picture is true but image file doesn't exist.");
-                has_picture = false;
-            }
-            this.logPicPaths = ps.logpicpaths;
-            this.logPicTS = ps.logpictimes;
-        }
-        this.comments.add(new Comment(ps.comment, LocalDateTime.now()));
-    }
+
 
     public Plant(PlantSave ps) {
         this.planttype = ps.planttype;
@@ -236,8 +243,10 @@ public class Plant {
             this.logPicPaths = ps.logpicpaths;
             this.logPicTS = ps.logpictimes;
         }
-        this.comments = ps.comments;
+        this.comments.addAll(ps.comments);
         this.pre_existing = ps.pre_existing;
+        this.lifestage = ps.lifeCycleStage;
+        this.deathcause = ps.causeOfDeath;
     }
 
     //------------------------ CUSTOM FUNCS -------------------------------------//
@@ -247,7 +256,8 @@ public class Plant {
         for(PlantLogItem pli: log) {
             logsave.add(pli.toSave());
         }
-        return new PlantSave(potsize, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments);
+        return new PlantSave(potsize, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments,
+                has_flowers, has_fruits, deathcause, lifestage);
     }
 
     public void water() {
@@ -263,4 +273,8 @@ public class Plant {
     }
 
 
+    @Override
+    public int compareTo(Plant o) {
+        return name.compareTo(o.getName());
+    }
 }

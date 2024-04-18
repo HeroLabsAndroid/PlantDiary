@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.plantdiary.R;
 import com.example.plantdiary.Util;
 import com.example.plantdiary.dialog.AttachCommentDialog;
+import com.example.plantdiary.dialog.CauseOfDeathDialog;
 import com.example.plantdiary.plant.Plant;
 import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantActionType;
@@ -32,7 +33,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
     //--------------- INTERFACES ---------------------------------//
 
     public interface PlantRemovedListener {
-        public void onPlantRemoved(Plant p);
+        public void onPlantRemoved(Plant p, int plantidx);
     }
 
     public interface PlantEditDialogLauncher {
@@ -89,9 +90,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
     public void removeItem(ViewHolder holder) {
         int pos = holder.getAdapterPosition();
 
-        prListen.onPlantRemoved(localDataSet.get(pos));
-        localDataSet.remove(pos);
-        notifyItemRemoved(pos);
+        prListen.onPlantRemoved(localDataSet.get(pos), pos);
+        //localDataSet.remove(pos);
+        //notifyItemRemoved(pos);
     }
 
     public void launchEditPlantDialog(ViewHolder holder) {
@@ -150,23 +151,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
         holder.getFabDelete().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(ctx);
-                boolean rpl = false;
-                builder.setPositiveButton("I do!", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        removeItem(holder);
-                    }
-                });
-                builder.setNegativeButton("Nah fuck that", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        // User cancels the dialog.
-                    }
-                });
-
-                builder.setTitle("Delete that shit?");
-
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                removeItem(holder);
             }
         });
 

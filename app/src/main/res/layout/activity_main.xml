@@ -11,9 +11,11 @@
         android:id="@+id/CSTRLYT_plantactions"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginBottom="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
         app:layout_constraintBottom_toTopOf="@+id/BTN_newplant"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
         <Button
@@ -63,24 +65,23 @@
         android:id="@+id/BTN_newplant"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/DRK_ACC3"
         android:text="Mach neu"
         android:textColor="@color/DRK_TXT_INV"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/TV_main_plantcnt"
+        app:layout_constraintBottom_toTopOf="@+id/TV_main_plantcnt"
         app:layout_constraintStart_toEndOf="@+id/SWTCH_show_actions" />
 
     <TextView
         android:id="@+id/TV_main_plantcnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textColor="@color/DRK_TXT"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_newplant"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/SWTCH_show_actions" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SWTCH_show_actions"
@@ -95,5 +96,15 @@
         app:layout_constraintTop_toTopOf="@+id/BTN_newplant"
         app:thumbTint="@color/DRK_ACC2"
         app:trackTint="@color/DRK_TXT" />
+
+    <Button
+        android:id="@+id/BTN_main_fallencomrades"
+        android:layout_width="128dp"
+        android:layout_height="wrap_content"
+        android:maxLines="2"
+        android:text="Fallen Comrades"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
+        app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

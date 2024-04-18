@@ -7,24 +7,12 @@
     android:background="@color/DRK_BG_MAIN"
     tools:context=".PlantRollActivity">
 
-    <Button
-        android:id="@+id/BTN_plantroll_addphoto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:backgroundTint="@color/DRK_ACC3"
-        android:text="cheese"
-        android:textColor="@color/DRK_TXT_INV"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TV_deadplant_cntcnt" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RCLV_deadplants"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/BTN_plantroll_addphoto"
+        app:layout_constraintBottom_toTopOf="@+id/TV_deadplant_cntcnt"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -33,10 +21,10 @@
         android:id="@+id/TV_deadplant_cntcnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginBottom="16dp"
         android:text="TextView"
         android:textColor="@color/DRK_TXT"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_plantroll_addphoto"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTN_plantroll_addphoto" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
