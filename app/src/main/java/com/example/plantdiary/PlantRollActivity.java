@@ -13,12 +13,15 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.plantdiary.cam.BitmapAndPath;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
 import com.example.plantdiary.cam.CamOps;
+import com.example.plantdiary.cam.PhotoAnim;
 import com.example.plantdiary.datadapt.PlantRollAdapter;
+import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
 
@@ -27,7 +30,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PlantRollActivity extends AppCompatActivity {
+public class PlantRollActivity extends AppCompatActivity implements ShowPhotoDialog.IVInitListener {
+    @Override
+    public void onIVInit(ImageView spDial) {
+        PhotoAnim pa = new PhotoAnim(spDial, roll, 0);
+        pa.run();
+    }
     //------------------- INTERFACES --------------------------//
 
     public interface PlantRollListener {
@@ -36,7 +44,7 @@ public class PlantRollActivity extends AppCompatActivity {
     }
 
     //------------------ VARS ---------------------------------//
-    Button btnAddPhoto;
+    Button btnAddPhoto, btnShowAnim;
     RecyclerView rclvPhoto;
 
     Plant plant;
@@ -85,6 +93,14 @@ public class PlantRollActivity extends AppCompatActivity {
 
     }
 
+    ShowPhotoDialog showAnimDial() {
+        ShowPhotoDialog animDial = new ShowPhotoDialog(roll, this);
+        animDial.show(getSupportFragmentManager(), "anim");
+        return animDial;
+    }
+
+
+
     //------------------ OVERRIDES ---------------------------------//
 
     @Override
@@ -93,8 +109,9 @@ public class PlantRollActivity extends AppCompatActivity {
         setContentView(R.layout.activity_plant_roll);
 
         btnAddPhoto = findViewById(R.id.BTN_plantroll_addphoto);
-        rclvPhoto = findViewById(R.id.RCLV_deadplants);
-        tvPhotoCnt = findViewById(R.id.TV_deadplant_cntcnt);
+        btnShowAnim = findViewById(R.id.BTN_plantroll_anim);
+        rclvPhoto = findViewById(R.id.RCLV_plantroll);
+        tvPhotoCnt = findViewById(R.id.TV_plantroll_cnt);
 
         Intent intent = getIntent();
 
@@ -118,6 +135,13 @@ public class PlantRollActivity extends AppCompatActivity {
         rclvPhoto.setAdapter(new PlantRollAdapter(this, getSupportFragmentManager(), roll));
 
         tvPhotoCnt.setText(String.format(Locale.getDefault(), "%d Fotos", plant.getLogPicPaths().size()));
+
+        btnShowAnim.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAnimDial();
+            }
+        });
     }
 
     @Override
