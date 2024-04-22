@@ -23,10 +23,6 @@ import java.util.ArrayList;
 
 public class ShowPhotoDialog extends DialogFragment {
 
-    public interface IVInitListener {
-        void onIVInit(ImageView iv);
-    }
-
     //----------------- VIEWS -------------------------------//
 
     ImageView ivPhoto;
@@ -34,15 +30,8 @@ public class ShowPhotoDialog extends DialogFragment {
 
     //------------------- VARS ---------------------------------//
 
-    boolean use_param_inflater = false;
-    LayoutInflater inflater;
     BitmapAndTimestamp bat;
 
-    ArrayList<BitmapAndTimestamp> bats = new ArrayList<>();
-    boolean do_anim = false;
-    int idx = 0;
-
-    IVInitListener iiListen;
 
 
     //---------------- CUSTOM FUNCS ---------------------------//
@@ -55,12 +44,7 @@ public class ShowPhotoDialog extends DialogFragment {
         this.bat = bat;
     }
 
-    public ShowPhotoDialog(ArrayList<BitmapAndTimestamp> bats, Context c) {
-        this.bats = bats;
-        do_anim = true;
-        idx = 0;
-        iiListen = (IVInitListener) c;
-    }
+
 
     //--------------- OVERRIDES -----------------------------//
     @NonNull
@@ -68,9 +52,9 @@ public class ShowPhotoDialog extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
 
-       if(!use_param_inflater) {
-           inflater = requireActivity().getLayoutInflater();
-       }
+
+        LayoutInflater inflater = requireActivity().getLayoutInflater();
+
 
         View layout = inflater.inflate(R.layout.dlg_showphoto, null);
 
@@ -79,16 +63,9 @@ public class ShowPhotoDialog extends DialogFragment {
         ivPhoto = layout.findViewById(R.id.IV_showphoto_photo);
         tvTS = layout.findViewById(R.id.TV_showphoto_ts);
 
-        if(!do_anim) {
-            ivPhoto.setImageBitmap(Util.RotateBitmap(bat.bm, 90));
-            if(bat.ldt != null) tvTS.setText(Util.timestampToString(bat.ldt));
-            else tvTS.setVisibility(View.INVISIBLE);
-
-        } else {
-            ivPhoto.setImageBitmap(Util.RotateBitmap(bats.get(0).bm, 90));
-        }
-
-
+        ivPhoto.setImageBitmap(Util.RotateBitmap(bat.bm, 90));
+        if(bat.ldt != null) tvTS.setText(Util.timestampToString(bat.ldt));
+        else tvTS.setVisibility(View.INVISIBLE);
 
 
         return builder.create();
@@ -96,16 +73,12 @@ public class ShowPhotoDialog extends DialogFragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-
-        if(do_anim) iiListen.onIVInit(ivPhoto);
         super.onViewCreated(view, savedInstanceState);
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        if(do_anim) iiListen.onIVInit(ivPhoto);
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 }

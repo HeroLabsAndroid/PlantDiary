@@ -21,21 +21,19 @@ import com.example.plantdiary.cam.BitmapAndTimestamp;
 import com.example.plantdiary.cam.CamOps;
 import com.example.plantdiary.cam.PhotoAnim;
 import com.example.plantdiary.datadapt.PlantRollAdapter;
+import com.example.plantdiary.dialog.ShowAnimDialog;
 import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PlantRollActivity extends AppCompatActivity implements ShowPhotoDialog.IVInitListener {
-    @Override
-    public void onIVInit(ImageView spDial) {
-        PhotoAnim pa = new PhotoAnim(spDial, roll, 0);
-        pa.run();
-    }
+public class PlantRollActivity extends AppCompatActivity {
+
     //------------------- INTERFACES --------------------------//
 
     public interface PlantRollListener {
@@ -93,9 +91,14 @@ public class PlantRollActivity extends AppCompatActivity implements ShowPhotoDia
 
     }
 
-    ShowPhotoDialog showAnimDial() {
-        ShowPhotoDialog animDial = new ShowPhotoDialog(roll, this);
-        animDial.show(getSupportFragmentManager(), "anim");
+    ShowAnimDialog showAnimDial() {
+        ShowAnimDialog animDial = null;
+        if(roll.size() > 1) {
+            animDial = new ShowAnimDialog(roll, this);
+            animDial.show(getSupportFragmentManager(), "anim");
+        } else {
+            Snackbar.make(rclvPhoto, "Too few photos", Snackbar.LENGTH_SHORT).show();
+        }
         return animDial;
     }
 
