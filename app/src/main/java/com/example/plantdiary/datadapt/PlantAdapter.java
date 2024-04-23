@@ -18,6 +18,7 @@ import com.example.plantdiary.Util;
 import com.example.plantdiary.dialog.AttachCommentDialog;
 import com.example.plantdiary.dialog.CauseOfDeathDialog;
 import com.example.plantdiary.plant.Plant;
+import com.example.plantdiary.plant.PlantGridData;
 import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -26,14 +27,20 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> implements AttachCommentDialog.AttachCommentListener{
+public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
 
 
 
     //--------------- INTERFACES ---------------------------------//
 
     public interface PlantRemovedListener {
-        public void onPlantRemoved(Plant p, int plantidx);
+        public void onPlantRemoved(int plantidx);
+    }
+
+    public interface PlantActionListener {
+        void onPlantWatered(int plantidx);
+        void onPlantFertilized(int plantidx);
+        void onPlantCommented(int plantidx);
     }
 
     public interface PlantEditDialogLauncher {
@@ -45,9 +52,10 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
 
     //---------------- VARS ------------------------------------//
 
-    ArrayList<Plant> localDataSet;
+    ArrayList<PlantGridData> localDataSet;
     Context ctx;
 
+    PlantActionListener paListen;
     PlantRemovedListener prListen;
     PlantEditDialogLauncher pedLaunch;
 
@@ -66,31 +74,22 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
 
     //--------------- CONSTRUCTORS -----------------------------//
 
-    public PlantAdapter(Context ctx, ArrayList<Plant> lds) {
+    public PlantAdapter(Context ctx, ArrayList<PlantGridData> lds) {
         this.ctx = ctx;
         localDataSet = lds;
         prListen = (PlantRemovedListener) ctx;
         pedLaunch = (PlantEditDialogLauncher) ctx;
+        paListen = (PlantActionListener) ctx;
     }
 
     //--------------- CUSTOM FUNCS -----------------------------//
 
-    public void waterPlant(ViewHolder holder) {
-        localDataSet.get(holder.getAdapterPosition()).water();
-        Snackbar.make(holder.getIvProfPic(), String.format(Locale.getDefault(), "Watered %s", localDataSet.get(holder.getAdapterPosition()).getName()),
-                Snackbar.LENGTH_SHORT).show();
-    }
 
-    public void fertilizePlant(ViewHolder holder) {
-        localDataSet.get(holder.getAdapterPosition()).fertilize();
-        Snackbar.make(holder.getIvProfPic(), String.format(Locale.getDefault(), "Fertilized %s", localDataSet.get(holder.getAdapterPosition()).getName()),
-                Snackbar.LENGTH_SHORT).show();
-    }
 
     public void removeItem(ViewHolder holder) {
         int pos = holder.getAdapterPosition();
 
-        prListen.onPlantRemoved(localDataSet.get(pos), pos);
+        prListen.onPlantRemoved(pos);
         //localDataSet.remove(pos);
         //notifyItemRemoved(pos);
     }
@@ -108,7 +107,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
     }
 
     public void setBitmap(ViewHolder holder) {
-        Bitmap bm = Util.RotateBitmap(localDataSet.get(holder.getAdapterPosition()).getProfilepic(), 90);
+        Bitmap bm = Util.RotateBitmap(localDataSet.get(holder.getAdapterPosition()).photo, 90);
         int height = (int)ctx.getResources().getDimension(R.dimen.MAINGRID_PIC_HEIGHT);
         bm = Util.scaleBitmap(bm, (int)((float)(bm.getWidth()/(float)bm.getHeight())*height), height);
         holder.getIvProfPic().setImageBitmap(bm);
@@ -121,10 +120,10 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
                 launchPlantActivity(holder);
                 break;
             case WATER:
-                waterPlant(holder);
+                paListen.onPlantWatered(holder.getAdapterPosition());
                 break;
             case FERTILIZE:
-                fertilizePlant(holder);
+                paListen.onPlantFertilized(holder.getAdapterPosition());
                 break;
             case PLANTCOMMENT:
                 launchAttachCommentDialog(holder);
@@ -145,8 +144,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.getTvName().setText(localDataSet.get(position).getName());
-        holder.getTvType().setText(localDataSet.get(position).getPlanttype());
+        holder.getTvName().setText(localDataSet.get(position).name);
+        holder.getTvType().setText(localDataSet.get(position).type);
 
         holder.getFabDelete().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -170,7 +169,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
             }
         });
 
-        if(localDataSet.get(position).hasPicture())  {
+        if(localDataSet.get(position).photo != null)  {
             setBitmap(holder);
         }
 
@@ -182,11 +181,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder> 
         return localDataSet.size();
     }
 
-    @Override
-    public void attachComment(Comment cmt, int idx) {
-        localDataSet.get(idx).getComments().add(cmt);
-        notifyItemChanged(idx);
-    }
+
 
 
 

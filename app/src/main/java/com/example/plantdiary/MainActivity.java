@@ -28,7 +28,9 @@ import com.example.plantdiary.io.DeadPlant;
 import com.example.plantdiary.io.PlantDiaryIO;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
+import com.example.plantdiary.plant.PlantGridData;
 import com.example.plantdiary.plantaction.CauseOfDeath;
+import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -36,7 +38,12 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements NewPlantDialog.PlantAddedListener, PlantAdapter.PlantRemovedListener, PlantAdapter.PlantEditDialogLauncher, CauseOfDeathDialog.CauseOfDeathListener {
+public class MainActivity extends AppCompatActivity implements PlantAdapter.PlantActionListener,
+                                                                NewPlantDialog.PlantAddedListener,
+                                                                PlantAdapter.PlantRemovedListener,
+                                                                PlantAdapter.PlantEditDialogLauncher,
+                                                                CauseOfDeathDialog.CauseOfDeathListener,
+                                                                AttachCommentDialog.AttachCommentListener {
     //------------ CONST ---------------------------------------------//
 
     final boolean LOAD_LEGACY = false;
@@ -56,6 +63,7 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     boolean show_ctrls = false;
 
     ArrayList<Plant> plants = new ArrayList<>();
+    ArrayList<PlantGridData> pgdat = new ArrayList<>();
 
     ArrayList<DeadPlant> fallen_brothers = new ArrayList<>();
 
@@ -83,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
 
     void launchAttachCommentDialog(int plantidx) {
         FragmentManager fragMan = getSupportFragmentManager();
-        AttachCommentDialog acDial = new AttachCommentDialog((AttachCommentDialog.AttachCommentListener) plantRecView.getAdapter(), plantidx);
+        AttachCommentDialog acDial = new AttachCommentDialog((AttachCommentDialog.AttachCommentListener) this, plantidx);
         acDial.show(fragMan, "attachcomment");
     }
 
@@ -159,7 +167,11 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
         controlsCLYT.setVisibility(View.GONE);
 
         plantRecView.setLayoutManager(new GridLayoutManager(this, 2));
-        PlantAdapter plAdapt = new PlantAdapter(this, plants);
+        ArrayList<PlantGridData> pgdat = new ArrayList<>();
+        for(Plant p: plants) {
+            pgdat.add(new PlantGridData(p));
+        }
+        PlantAdapter plAdapt = new PlantAdapter(this, pgdat);
         plantRecView.setAdapter(plAdapt);
 
         newPlantBtn.setOnClickListener(new View.OnClickListener() {
@@ -227,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
             pos++;
         }
         plants.add(pos, plant);
+        pgdat.add(pos, new PlantGridData(plant));
         plantRecView.getAdapter().notifyItemInserted(pos);
         plantRecView.getAdapter().notifyItemRangeChanged(pos, 1);
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
@@ -235,6 +248,7 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     @Override
     public void onPlantChanged(Plant plant, int pos) {
         plants.set(pos, plant);
+        pgdat.set(pos, new PlantGridData(plant));
         plantRecView.getAdapter().notifyItemChanged(pos);
         plantRecView.getAdapter().notifyItemRangeChanged(pos, 1);
     }
@@ -251,14 +265,9 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     }
 
     @Override
-    public void onPlantRemoved(Plant p, int plantidx) {
-        CauseOfDeathDialog codDial = new CauseOfDeathDialog(this, plantidx, p);
+    public void onPlantRemoved(int plantidx) {
+        CauseOfDeathDialog codDial = new CauseOfDeathDialog(this, plantidx, plants.get(plantidx));
         codDial.show(getSupportFragmentManager(), "slctcod");
-      /*  plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
-        if(p.hasPicture()) {
-            File imgPath = new File(p.getPicture_path());
-            if(imgPath.exists()) imgPath.delete();
-        }*/
     }
 
     @Override
@@ -327,7 +336,9 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
     @Override
     public void onCauseSelected(Plant plant, int plantidx, CauseOfDeath cod) {
         plants.remove(plantidx);
+        pgdat.remove(plantidx);
         plantRecView.getAdapter().notifyItemRemoved(plantidx);
+
 
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
         for(String s: plant.getLogPicPaths()) {
@@ -337,5 +348,29 @@ public class MainActivity extends AppCompatActivity implements NewPlantDialog.Pl
 
         fallen_brothers.add(new DeadPlant(plant, cod));
         PlantDiaryIO.saveDeadPlants(this, fallen_brothers);
+    }
+
+    @Override
+    public void onPlantWatered(int plantidx) {
+        plants.get(plantidx).water();
+        Snackbar.make(plantRecView, String.format(Locale.getDefault(), "Watered %s", plants.get(plantidx).getName()),
+                Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPlantFertilized(int plantidx) {
+        plants.get(plantidx).fertilize();
+        Snackbar.make(plantRecView, String.format(Locale.getDefault(), "Fertilized %s", plants.get(plantidx).getName()),
+                Snackbar.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onPlantCommented(int plantidx) {
+
+    }
+
+    @Override
+    public void attachComment(Comment cmt, int idx) {
+        plants.get(idx).getComments().add(cmt);
     }
 }
