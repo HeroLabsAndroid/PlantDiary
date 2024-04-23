@@ -1,5 +1,6 @@
 package com.example.plantdiary.dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -23,7 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class ShowAnimDialog extends DialogFragment implements Runnable{
+public class ShowAnimDialog extends DialogFragment{
 
 
     //----------------- VIEWS -------------------------------//
@@ -37,33 +38,43 @@ public class ShowAnimDialog extends DialogFragment implements Runnable{
 
     boolean no_photos = false;
     boolean anim_running = false;
-    final long SECONDS_PER_DAY = 10;
+    final long SECONDS_PER_DAY = 1;
     final double SECONDS_PER_HOUR = SECONDS_PER_DAY/24.0;
     ArrayList<BitmapAndTimestamp> pics;
     int idx = 0;
     Context ctx;
 
 
+    Activity act;
+
+
 
     //---------------- CUSTOM FUNCS ---------------------------//
 
-    long updatePhoto() {
-        long runtime = (idx < pics.size()-1) ? (int)(pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.HOURS)*SECONDS_PER_HOUR) : -1;
-        ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90));
-        idx++;
+    void updatePhoto() {
 
-        tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size()));
 
-        return runtime;
+    }
+
+    void animate() {
+        if(!anim_running) {
+            idx = 0;
+            anim_running = true;
+            btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_GRAYOUT));
+
+            resetAnim();
+            anim.start();
+        }
     }
 
     //---------------- CONSTRUCT ------------------------------//
 
 
-    public ShowAnimDialog(ArrayList<BitmapAndTimestamp> bats, Context c) {
+    public ShowAnimDialog(Activity act, ArrayList<BitmapAndTimestamp> bats, Context c) {
         this.pics = bats;
         idx = 0;
         ctx = c;
+        this.act = act;
     }
 
     //--------------- OVERRIDES -----------------------------//
@@ -92,13 +103,8 @@ public class ShowAnimDialog extends DialogFragment implements Runnable{
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(!anim_running) {
-                    anim_running = true;
-                    btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_GRAYOUT));
 
-                    run();
-                }
-
+                animate();
             }
         });
 
@@ -106,23 +112,56 @@ public class ShowAnimDialog extends DialogFragment implements Runnable{
         return builder.create();
     }
 
-    @Override
-    public void run() {
-        if(!no_photos) {
-            if(idx < pics.size()) {
-                long rt = updatePhoto();
-                if(rt > 0) {
-                    try {
-                        Thread.sleep(rt*SECONDS_PER_DAY);
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                }
-                run();
-            } else {
-                anim_running = false;
-                btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_ACC6));
-            }
-        }
+    Thread anim;
+
+    void resetAnim() {
+       anim = new Thread(new Runnable() {
+           @Override
+           public void run() {
+               if(!no_photos) {
+                   if(idx < pics.size()-1) {
+
+                       long runtime = (idx < pics.size()-1) ? (int)((float)pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.HOURS)*SECONDS_PER_HOUR) : -1;
+
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
+                       idx++;
+
+
+                       // ivPhoto.refreshDrawableState();
+
+                       //tvProgress.refreshDrawableState();
+
+
+                       if(runtime > 0) {
+                           try {
+                               Thread.sleep(runtime*SECONDS_PER_DAY*1000);
+
+                               //updatePhoto();
+                           } catch (InterruptedException e) {
+                               throw new RuntimeException(e);
+                           }
+                       }
+                   } else {
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));
+                       anim_running = false;
+                       btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_ACC6));
+                   }
+
+                   onWaitEnd();
+
+               }
+           }
+       });
+    }
+
+
+    private void onWaitEnd() {
+        if(anim_running) {
+            if(anim.isAlive()) anim.interrupt();
+            resetAnim();
+            anim.start();
+        };
     }
 }

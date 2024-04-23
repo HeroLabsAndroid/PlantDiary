@@ -94,8 +94,9 @@ public class PlantRollActivity extends AppCompatActivity {
     ShowAnimDialog showAnimDial() {
         ShowAnimDialog animDial = null;
         if(roll.size() > 1) {
-            animDial = new ShowAnimDialog(roll, this);
+            animDial = new ShowAnimDialog(this, roll, this);
             animDial.show(getSupportFragmentManager(), "anim");
+
         } else {
             Snackbar.make(rclvPhoto, "Too few photos", Snackbar.LENGTH_SHORT).show();
         }
