@@ -123,6 +123,16 @@ public class ShowAnimDialog extends DialogFragment{
 
                        long runtime = (idx < pics.size()-1) ? (int)((float)pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.HOURS)*SECONDS_PER_HOUR) : -1;
 
+                       if(runtime > 0) {
+                           try {
+                               Thread.sleep(runtime*SECONDS_PER_DAY*1000);
+
+                               //updatePhoto();
+                           } catch (InterruptedException e) {
+                               throw new RuntimeException(e);
+                           }
+                       }
+
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
                        idx++;
@@ -133,15 +143,7 @@ public class ShowAnimDialog extends DialogFragment{
                        //tvProgress.refreshDrawableState();
 
 
-                       if(runtime > 0) {
-                           try {
-                               Thread.sleep(runtime*SECONDS_PER_DAY*1000);
 
-                               //updatePhoto();
-                           } catch (InterruptedException e) {
-                               throw new RuntimeException(e);
-                           }
-                       }
                    } else {
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));

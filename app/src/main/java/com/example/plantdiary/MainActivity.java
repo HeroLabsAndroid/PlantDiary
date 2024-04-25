@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         controlsCLYT.setVisibility(View.GONE);
 
         plantRecView.setLayoutManager(new GridLayoutManager(this, 2));
-        ArrayList<PlantGridData> pgdat = new ArrayList<>();
+        pgdat = new ArrayList<>();
         for(Plant p: plants) {
             pgdat.add(new PlantGridData(p));
         }
