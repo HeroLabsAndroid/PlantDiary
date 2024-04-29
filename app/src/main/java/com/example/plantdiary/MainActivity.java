@@ -6,6 +6,7 @@ import androidx.appcompat.widget.SwitchCompat;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -79,14 +80,28 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
     void showNewPlantDialog() {
         FragmentManager fragMan = getSupportFragmentManager();
         NewPlantDialog newPlantDial = new NewPlantDialog(this);
-        newPlantDial.show(fragMan, "newplantdial");
+        FragmentTransaction transaction = fragMan.beginTransaction();
+        // For a polished look, specify a transition animation.
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // To make it fullscreen, use the 'content' root view as the container
+        // for the fragment, which is always the root view for the activity.
+        transaction.add(android.R.id.content, newPlantDial)
+                .addToBackStack(null).commit();
+
+        //newPlantDial.show(fragMan, "newplantdial");
     }
 
     void showEditPlantDialog(int idx) {
         FragmentManager fragMan = getSupportFragmentManager();
         Plant toEdit = plants.get(idx);
         NewPlantDialog newPlantDial = new NewPlantDialog(this, toEdit, idx);
-        newPlantDial.show(fragMan, "newplantdial");
+        FragmentTransaction transaction = fragMan.beginTransaction();
+        // For a polished look, specify a transition animation.
+        transaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+        // To make it fullscreen, use the 'content' root view as the container
+        // for the fragment, which is always the root view for the activity.
+        transaction.add(android.R.id.content, newPlantDial)
+                .addToBackStack(null).commit();
     }
 
     void launchAttachCommentDialog(int plantidx) {

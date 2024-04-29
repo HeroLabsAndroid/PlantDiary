@@ -74,7 +74,7 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
     void fillLayoutWithPlantData() {
 
-        tvVal_date.setText(plant.isPre_existing() ? "Pre-Existing" : Util.dateToString(plant.getOwned_since()));
+        tvVal_date.setText(plant.isPre_existing() ? getString(R.string.LBL_defineplant_preex) : Util.dateToString(plant.getOwned_since()));
 
         tvName.setText(plant.getName());
 
@@ -82,7 +82,7 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
         tvVal_Loc.setText(plant.getLocation());
 
-        tvVal_potsz.setText(String.format(Locale.getDefault(), "%.2f", plant.getPotsize()));
+        tvVal_potsz.setText(plant.isPotsize_na() ? getString(R.string.LBL_defineplant_nopotsz): String.format(Locale.getDefault(), "%.2f", plant.getPotsize()));
 
         tvVal_actyp.setText(plant.getAcqTyp().toString());
 

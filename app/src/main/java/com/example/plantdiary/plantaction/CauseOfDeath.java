@@ -3,7 +3,7 @@ package com.example.plantdiary.plantaction;
 import java.io.Serializable;
 
 public enum CauseOfDeath implements Serializable {
-    DROWNED, EATEN, PARTITIONED, SICKNESS, TRASHED, NATURAL, COLD, NONE;
+    DROWNED, EATEN, PARTITIONED, SICKNESS, TRASHED, NATURAL, COLD, GIFTED, NONE;
 
     public String toString() {
         switch (this) {
@@ -21,6 +21,8 @@ public enum CauseOfDeath implements Serializable {
                 return "Altersschwäche";
             case COLD:
                 return "Erfroren";
+            case GIFTED:
+                return "Weggegeben";
             default:
                 return "INVAL";
         }
@@ -53,6 +55,8 @@ public enum CauseOfDeath implements Serializable {
                 return NATURAL;
             case 6:
                 return COLD;
+            case 7:
+                return GIFTED;
             default:
                 return NONE;
         }

@@ -7,9 +7,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -69,7 +72,7 @@ public class NewPlantDialog extends DialogFragment {
     Button confirmBUTT, photoBUTT;
     FloatingActionButton commentBUTT;
 
-    Chip preexCHIP;
+    Chip preexCHIP, nopotszCHIP;
 
     ImageView photoIV;
     EditText nameET, typeET, locET, potszET, commentET;
@@ -154,7 +157,7 @@ public class NewPlantDialog extends DialogFragment {
             plant.getLog().add(pe);
         }
 
-        if(potszET.getText().toString().compareTo(getString(R.string.PROMPT_defineplant_potsize)) != 0) {
+        if(!nopotszCHIP.isChecked() && potszET.getText().toString().compareTo(getString(R.string.PROMPT_defineplant_potsize)) != 0) {
             plant.setPotsize(Float.parseFloat(potszET.getText().toString()));
         } else plant.setPotsize(0);
 
@@ -171,6 +174,10 @@ public class NewPlantDialog extends DialogFragment {
 
         if(preexCHIP.isChecked()) {
             plant.setPre_existing(true);
+        }
+
+        if(nopotszCHIP.isChecked()) {
+            plant.setPotsize_na(true);
         }
 
 
@@ -195,13 +202,19 @@ public class NewPlantDialog extends DialogFragment {
         else typeRaisedRADBUTT.setChecked(true);
 
         locET.setText(p.getLocation());
-        potszET.setText(String.format(Locale.getDefault(), "%.2f", p.getPotsize()));
+        if(p.isPotsize_na()) {
+            potszET.setText(getString(R.string.LBL_defineplant_nopotsz));
+            nopotszCHIP.setChecked(true);
+        } else {
+            potszET.setText(String.format(Locale.getDefault(), "%.2f", p.getPotsize()));
+        }
+
 
 
 
         if(p.isPre_existing()) {
             preexCHIP.setChecked(true);
-            dateTV.setText("Pre-Existing");
+            dateTV.setText(getString(R.string.LBL_defineplant_preex));
         } else {
             dateTV.setText(Util.dateToString(p.getOwned_since()));
         }
@@ -210,6 +223,8 @@ public class NewPlantDialog extends DialogFragment {
         commentcntTV.setText(String.format(Locale.getDefault(), "%d Kommis", cmt.size()));
 
         lifecycSPN.setSelection(p.getLifestage().ordinal());
+
+
     }
 
     void addComment() {
@@ -244,15 +259,10 @@ public class NewPlantDialog extends DialogFragment {
         super.onAttach(context);
     }
 
-    @NonNull
+    @Nullable
     @Override
-    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
-
-        LayoutInflater inflater = requireActivity().getLayoutInflater();
-        View layout = inflater.inflate(R.layout.dlg_defineplant, null);
-
-        builder.setView(layout);
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View layout = inflater.inflate(R.layout.dlg_defineplant, container, false);
 
         confirmBUTT = layout.findViewById(R.id.BTN_addplant_confirm);
 
@@ -275,6 +285,16 @@ public class NewPlantDialog extends DialogFragment {
         commentcntTV = layout.findViewById(R.id.TV_addplant_commentcnt);
 
         preexCHIP = layout.findViewById(R.id.CHP_addplant_preex);
+
+        nopotszCHIP = layout.findViewById(R.id.CHP_addplant_nopotsz);
+        nopotszCHIP.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                potszET.setEnabled(!isChecked);
+                if(isChecked) potszET.setText(R.string.LBL_defineplant_nopotsz);
+                else potszET.setText("0");
+            }
+        });
 
         lifecycSPN = layout.findViewById(R.id.SPN_addplant_lifecycle);
 
@@ -305,7 +325,7 @@ public class NewPlantDialog extends DialogFragment {
         lifecycSPN.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-               // applyLifeStage(LifeCycleStage.fromOrdinal(position));
+                // applyLifeStage(LifeCycleStage.fromOrdinal(position));
             }
 
             @Override
@@ -315,6 +335,24 @@ public class NewPlantDialog extends DialogFragment {
         });
 
         if(edit_mode) fillDialogFromPlant(plant);
+        else {
+            dateTV.setText(Util.dateToString(LocalDate.now()));
+        }
+
+        return layout;
+    }
+
+
+
+    @NonNull
+    @Override
+    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(requireActivity());
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+
 
 
         return builder.create();

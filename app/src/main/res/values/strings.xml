@@ -2,12 +2,16 @@
     <string name="app_name">PlantDiary</string>
 
     <string name="PROMPT_defineplant_potsize">Topfgröße</string>
+    <string name="PROMPT_defineplant_nopotsz">Kasten/Gemeinschaftsbeet?</string>
+    <string name="LBL_defineplant_nopotsz">Kasten/Gemeinschaftsbeet</string>
     <string name="PROMPT_defineplant_location">Standort</string>
     <string name="PROMPT_defineplant_name">Name</string>
     <string name="PROMPT_defineplant_type">Typ</string>
     <string name="PROMPT_defineplant_acqtyp">Akquisitionsart</string>
     <string name="PROMPT_defineplant_date">In Besitz seit</string>
     <string name="PROMPT_defineplant_stage">Zyklus</string>
+    <string name="PROMPT_defineplant_preex">Pre-Existing?</string>
+    <string name="LBL_defineplant_preex">Pre-Existing</string>
 
     <string name="FLAG_err">"ERROR</string>
     <string name="PROMT_defineplant_comment">Kein Kommentar?</string>

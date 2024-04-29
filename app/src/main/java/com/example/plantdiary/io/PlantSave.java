@@ -15,6 +15,8 @@ public class PlantSave implements Serializable {
 
     //----------------- VARS ------------------------//
     public float potsize;
+
+    public boolean potsize_na;
     public LocalDate owned_since;
     public boolean pre_existing;
 
@@ -43,7 +45,7 @@ public class PlantSave implements Serializable {
     //--------------- CONSTRUCTOR --------------------------//
 
 
-    public PlantSave(float potsize, LocalDate owned_since, boolean pre_existing, String name, String planttype, String location, AcquisitionType aqcType,
+    public PlantSave(float potsize, boolean potsize_na, LocalDate owned_since, boolean pre_existing, String name, String planttype, String location, AcquisitionType aqcType,
                      ArrayList<PlantLogItemSave> log, boolean has_img, String img_path, ArrayList<String> logpicpaths, ArrayList<LocalDateTime> logpictimes, ArrayList<Comment> comments,
                      boolean has_flowers, boolean has_fruit, CauseOfDeath causeOfDeath, LifeCycleStage lifeCycleStage) {
         this.potsize = potsize;
@@ -63,5 +65,6 @@ public class PlantSave implements Serializable {
         this.has_fruit = has_fruit;
         this.causeOfDeath = causeOfDeath;
         this.lifeCycleStage = lifeCycleStage;
+        this.potsize_na = potsize_na;
     }
 }

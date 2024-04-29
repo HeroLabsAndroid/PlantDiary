@@ -3,9 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/DRK_BG_SHADE"
     android:scrollbars="vertical">
+
+    <com.google.android.material.chip.Chip
+        android:id="@+id/CHP_addplant_nopotsz"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:checkable="true"
+        android:text="@string/PROMPT_defineplant_nopotsz"
+        app:checkedIconVisible="true"
+        app:chipIconVisible="true"
+        app:layout_constraintStart_toStartOf="@+id/ET_addplant_potsize"
+        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_potsize" />
 
     <EditText
         android:id="@+id/ET_addplant_name"
@@ -121,12 +132,12 @@
         android:id="@+id/TV_addplant_ownedsince"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:text="datum"
         android:textColor="@color/DRK_GRAYOUT"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_potsize"
-        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_potsize" />
+        app:layout_constraintTop_toBottomOf="@+id/CHP_addplant_nopotsz" />
 
     <Button
         android:id="@+id/BTN_addplant_takephoto"
@@ -190,7 +201,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:checkable="true"
-        android:text="Pre-Existing?"
+        android:text="@string/PROMPT_defineplant_preex"
         app:checkedIconVisible="true"
         app:chipIconVisible="true"
         app:layout_constraintBottom_toBottomOf="@+id/TV_addplant_ownedsince"

@@ -25,6 +25,8 @@ public class Plant implements Comparable<Plant>{
 
     //-------------- VARS -------------------------- //
     private float potsize;
+
+    private boolean potsize_na = false;
     private LocalDate owned_since;
     private boolean pre_existing = true;
 
@@ -57,6 +59,8 @@ public class Plant implements Comparable<Plant>{
 
 
     //--------------------------GETTERS AND SETTERS------------------------------------//
+
+
 
     public ArrayList<LocalDateTime> getLogPicTS() {
         return logPicTS;
@@ -199,6 +203,14 @@ public class Plant implements Comparable<Plant>{
         this.lifestage = lifestage;
     }
 
+    public boolean isPotsize_na() {
+        return potsize_na;
+    }
+
+    public void setPotsize_na(boolean potsize_na) {
+        this.potsize_na = potsize_na;
+    }
+
     //-------------------------- CONSTRUCTORS--------------------------------------//
 
     public Plant(String name, AcquisitionType act) {
@@ -245,8 +257,11 @@ public class Plant implements Comparable<Plant>{
         }
         this.comments.addAll(ps.comments);
         this.pre_existing = ps.pre_existing;
+        this.potsize_na = ps.potsize_na;
         this.lifestage = ps.lifeCycleStage;
         this.deathcause = ps.causeOfDeath;
+        this.has_flowers = ps.has_flowers;
+        this.has_fruits = ps.has_fruit;
     }
 
     //------------------------ CUSTOM FUNCS -------------------------------------//
@@ -256,7 +271,7 @@ public class Plant implements Comparable<Plant>{
         for(PlantLogItem pli: log) {
             logsave.add(pli.toSave());
         }
-        return new PlantSave(potsize, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments,
+        return new PlantSave(potsize, potsize_na, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments,
                 has_flowers, has_fruits, deathcause, lifestage);
     }
 
