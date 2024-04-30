@@ -32,7 +32,8 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 
-public class PlantRollActivity extends AppCompatActivity {
+public class PlantRollActivity extends AppCompatActivity implements PlantRollAdapter.RollPhotoRemovedListener {
+
 
     //------------------- INTERFACES --------------------------//
 
@@ -163,5 +164,17 @@ public class PlantRollActivity extends AppCompatActivity {
         setResult(RESULT_OK, retIntent);
         finish();
         super.onBackPressed();
+    }
+
+    @Override
+    public void onRollPhotoRemoved(int idx) {
+        File rem = new File(plant.getLogPicPaths().get(idx));
+        if(rem.exists()) rem.delete();
+
+        plant.getLogPicPaths().remove(idx);
+        roll = makeRollArray();
+        rclvPhoto.setAdapter(new PlantRollAdapter(this, getSupportFragmentManager(), roll));
+        tvPhotoCnt.setText(String.format(Locale.getDefault(), "%d Fotos", plant.getLogPicPaths().size()));
+
     }
 }

@@ -57,8 +57,9 @@ public class ShowAnimDialog extends DialogFragment{
     }
 
     void animate() {
-        if(!anim_running) {
+        if(!anim_running && !pics.isEmpty()) {
             idx = 0;
+            ivPhoto.setImageBitmap(pics.get(0).bm);
             anim_running = true;
             btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_GRAYOUT));
 

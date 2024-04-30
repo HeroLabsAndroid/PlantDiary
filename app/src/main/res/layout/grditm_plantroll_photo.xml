@@ -24,11 +24,25 @@
         android:layout_width="@dimen/ROLL_PIC_HEIGHT"
         android:layout_height="wrap_content"
         android:background="@color/DRK_BG_MAIN"
+        android:fontFamily="@font/almendra_display"
         android:padding="2dp"
         android:text="TextView"
         android:textAlignment="center"
         android:textColor="@color/DRK_TXT"
+        android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/IV_grditm_plantroll_photo"
         app:layout_constraintStart_toStartOf="@+id/IV_grditm_plantroll_photo"
         app:layout_constraintTop_toBottomOf="@+id/IV_grditm_plantroll_photo" />
+
+    <Button
+        android:id="@+id/BTN_grditm_plantroll_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:fontFamily="casual"
+        android:text="ya yeet"
+        app:layout_constraintEnd_toEndOf="@+id/TV_grditm_plantroll_name"
+        app:layout_constraintStart_toStartOf="@+id/TV_grditm_plantroll_name"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_plantroll_name" />
 </androidx.constraintlayout.widget.ConstraintLayout>

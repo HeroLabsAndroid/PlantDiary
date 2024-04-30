@@ -3,4 +3,5 @@
     <dimen name="MAINGRID_PIC_HEIGHT">96dp</dimen>
     <dimen name="PLANT_PIC_HEIGHT">169dp</dimen>
     <dimen name="ROLL_PIC_HEIGHT">128dp</dimen>
+    <dimen name="LIFECYC_SPN_WIDTH">164dp</dimen>
 </resources>

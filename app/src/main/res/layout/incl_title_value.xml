@@ -8,28 +8,31 @@
     android:paddingRight="16dp">
 
     <TextView
-        android:id="@+id/TV_incl_titvalsmol_tit"
+        android:id="@+id/TV_incl_titval_tit"
         android:layout_width="128dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginBottom="2dp"
+        android:fontFamily="@font/almendra_display"
         android:text="TextView"
         android:textColor="@color/DRK_TXT"
         android:textSize="16sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/TV_incl_titvalsmol_val"
+        android:id="@+id/TV_incl_titval_val"
         android:layout_width="196dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:fontFamily="@font/almendra_display"
         android:text="TextView"
         android:textColor="@color/DRK_TXT"
         android:textSize="16sp"
         android:textStyle="italic"
-        app:layout_constraintBottom_toBottomOf="@+id/TV_incl_titvalsmol_tit"
-        app:layout_constraintStart_toEndOf="@+id/TV_incl_titvalsmol_tit"
-        app:layout_constraintTop_toTopOf="@+id/TV_incl_titvalsmol_tit" />
+        app:layout_constraintBottom_toBottomOf="@+id/TV_incl_titval_tit"
+        app:layout_constraintStart_toEndOf="@+id/TV_incl_titval_tit"
+        app:layout_constraintTop_toTopOf="@+id/TV_incl_titval_tit" />
 </androidx.constraintlayout.widget.ConstraintLayout>
