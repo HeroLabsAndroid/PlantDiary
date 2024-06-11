@@ -77,7 +77,7 @@
         android:id="@+id/TV_main_plantcnt"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="32dp"
         android:text="TextView"
         android:textColor="@color/DRK_TXT"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -106,5 +106,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
         app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
+
+    <Button
+        android:id="@+id/BTN_export"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:backgroundTint="@color/DRK_ACC1"
+        android:text="Export"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/TV_main_plantcnt"
+        app:layout_constraintTop_toTopOf="@+id/TV_main_plantcnt" />
+
+    <Button
+        android:id="@+id/BTN_import"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:backgroundTint="@color/DRK_ACC4"
+        android:text="Import"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/BTN_export"
+        app:layout_constraintTop_toTopOf="@+id/BTN_export" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
