@@ -6,8 +6,15 @@ import android.util.Log;
 import com.example.plantdiary.plant.Plant;
 import com.example.plantdiary.plantaction.PlantLogItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
@@ -38,8 +45,33 @@ public class PlantDiaryIO {
 
 
 
-    static public void saveDeadPlants(Context con, ArrayList<DeadPlant> logs) {
+    static public void saveDeadPlants(Context con, ArrayList<DeadPlant> logs) throws JSONException, IOException {
+        JSONObject deadplantsave = new JSONObject();
+
+        JSONArray deadplantarr = new JSONArray();
+
+        for(DeadPlant pl: logs) {
+            deadplantarr.put(pl.toJSONSave());
+        }
+        deadplantsave.put("deadplants", deadplantarr);
+
+        FileOutputStream fos = con.openFileOutput("deadplants.dat", Context.MODE_PRIVATE);
+
+        FileWriter fw;
         try {
+            fw = new FileWriter(fos.getFD());
+            fw.write(deadplantsave.toString());
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fos.getFD().sync();
+            fos.close();
+        }
+
+        return jsave.toString();
+
+        /*try {
             FileOutputStream fos = con.openFileOutput("deadplantlog.dat", Context.MODE_PRIVATE);
             Log.d("SAVDAT", "Opened file.");
             ObjectOutputStream oos = new ObjectOutputStream(fos);
@@ -53,7 +85,7 @@ public class PlantDiaryIO {
             fos.close();
         } catch (Exception e) {
             Log.e("SAVDAT", e.toString());
-        }
+        }*/
 
     }
 

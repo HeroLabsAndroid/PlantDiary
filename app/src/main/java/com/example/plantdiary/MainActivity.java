@@ -52,6 +52,8 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
     //------------- VIEWS -------------------------------------------//
     Button newPlantBtn, waterBtn, fertBtn, commentBtn, fallenComradesBtn;
 
+    Button exportBtn, importBtn;
+
     ConstraintLayout controlsCLYT;
 
     SwitchCompat showCtrlSWTC;
@@ -177,6 +179,9 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         showCtrlSWTC = findViewById(R.id.SWTCH_show_actions);
         commentBtn = findViewById(R.id.BTN_comment);
         fallenComradesBtn = findViewById(R.id.BTN_main_fallencomrades);
+
+        exportBtn = findViewById(R.id.BTN_export);
+        importBtn = findViewById(R.id.BTN_import);
 
 
         controlsCLYT.setVisibility(View.GONE);

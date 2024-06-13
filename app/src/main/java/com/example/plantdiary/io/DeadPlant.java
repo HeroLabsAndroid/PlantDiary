@@ -3,9 +3,14 @@ package com.example.plantdiary.io;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
+import com.example.plantdiary.LDTsave;
+import com.example.plantdiary.Util;
 import com.example.plantdiary.plant.Plant;
 import com.example.plantdiary.plantaction.CauseOfDeath;
 import com.example.plantdiary.plantaction.LifeCycleStage;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -105,6 +110,19 @@ public class DeadPlant implements Comparable<DeadPlant> {
         img = BitmapFactory.decodeFile(profpicpath);
     }
 
+    public DeadPlant(JSONObject jsave) throws JSONException {
+        this.causeOfDeath = (CauseOfDeath) jsave.get("cod");
+        this.timeOfDeath = ((LDTsave)jsave.get("timeofdeath")).toLDT().toLocalDate();
+        this.pre_existing = jsave.getBoolean("preex");
+
+        jds.put("preex", pre_existing);
+        jdeadplant.put("ownedsince", new LDTsave(ownedSince.atStartOfDay()).toJSONSave());
+        jdeadplant.put("profpicpath", profpicpath);
+        jdeadplant.put("lifcyc", lifeCycleStage);
+        jdeadplant.put("name", name);
+        jdeadplant.put("type", type);
+    }
+
     public static DeadPlant fromSave(DeadPlantSave dps) {
         return new DeadPlant(dps.cod, dps.timeOfDeath, dps.pre_existing, dps.ownedSince, dps.profpicpath, dps.lifeCycleStage, dps.name, dps.type);
     }
@@ -116,5 +134,23 @@ public class DeadPlant implements Comparable<DeadPlant> {
     @Override
     public int compareTo(DeadPlant o) {
         return timeOfDeath.compareTo(o.timeOfDeath);
+    }
+
+    public boolean toJSONSave() throws JSONException {
+        JSONObject jdeadplant = new JSONObject();
+        try {
+            jdeadplant.put("cod", causeOfDeath);
+            jdeadplant.put("timeofdeath", new LDTsave(timeOfDeath.atStartOfDay()).toJSONSave());
+            jdeadplant.optBoolean("preex", pre_existing);
+            jdeadplant.put("ownedsince", new LDTsave(ownedSince.atStartOfDay()).toJSONSave());
+            jdeadplant.optString("profpicpath", profpicpath);
+            jdeadplant.put("lifcyc", lifeCycleStage);
+            jdeadplant.optString("name", name);
+            jdeadplant.optString("type", type);
+
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
