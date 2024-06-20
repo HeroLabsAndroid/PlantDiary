@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
 
+import com.example.plantdiary.LDTsave;
 import com.example.plantdiary.io.PlantLogItemSave;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plantaction.CauseOfDeath;
@@ -13,6 +14,10 @@ import com.example.plantdiary.plantaction.PlantAction;
 import com.example.plantdiary.plantaction.PlantActionType;
 import com.example.plantdiary.plantaction.PlantEvent;
 import com.example.plantdiary.plantaction.PlantLogItem;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.time.LocalDate;
@@ -264,6 +269,71 @@ public class Plant implements Comparable<Plant>{
         this.has_fruits = ps.has_fruit;
     }
 
+    public Plant(JSONObject jplant) {
+        try {
+            //Retrieve log items
+            log = new ArrayList<>();
+            JSONArray jplantlog = jplant.getJSONArray("logitems");
+            JSONArray jplantlogtypes = jplant.getJSONArray("logtypes");
+            for(int i=0; i<jplantlog.length(); i++) {
+                PlantLogItem.ItemType itemType = (PlantLogItem.ItemType) jplantlogtypes.get(i);
+                log.add(itemType == PlantLogItem.ItemType.ACTION ? (PlantAction) jplantlog.get(i) : (PlantEvent) jplantlog.get(i));
+            }
+
+            //retrieve comments
+            comments = new ArrayList<>();
+            JSONArray jplantcomments = new JSONArray();
+            for(int i=0; i<jplantcomments.length(); i++) {
+                comments.add(new Comment(jplantcomments.getJSONObject(i)));
+            }
+
+            //retrieve photo data
+            logPicPaths = new ArrayList<>();
+            JSONArray jplantpics = jplant.getJSONArray("plantpics");
+            for(int i=0; i<jplantpics.length(); i++) {
+                logPicPaths.add(jplantpics.getString(i));
+            }
+
+            logPicTS = new ArrayList<>();
+            JSONArray jplantpicts = new JSONArray();
+            for(int i=0; i<jplantpicts.length(); i++) {
+                logPicTS.add(new LDTsave(jplantpicts.getJSONObject(i)).toLDT());
+            }
+
+            //retrieve other params
+
+            potsize = (float) jplant.getDouble("potsize");
+            potsize_na = jplant.getBoolean("potsize_na");
+            owned_since = new LDTsave(jplant.getJSONObject("owned_since")).toLDT().toLocalDate();
+            pre_existing = jplant.getBoolean("pre_existing");
+            name = jplant.getString("name");
+            planttype = jplant.getString("planttype");
+            location = jplant.getString("location");
+            acqTyp = AcquisitionType.fromOrdinal(jplant.getInt("acqTyp"));
+            picture_path = jplant.getString("pic_path");
+            has_picture = jplant.getBoolean("has_picture");
+            File imgFile = new File(picture_path);
+            if(imgFile.exists()) {
+                Bitmap bm = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
+                if(bm != null) {
+                    this.profilepic = bm;
+                } else {
+                    Log.e("PLANTCONSTRUCT", "ERROR! image file exists, but created bitmap is null.");
+                }
+            } else {
+                Log.e("PLANTCONSTRUCT", "ERROR! has_picture is true but image file doesn't exist.");
+                has_picture = false;
+            }
+            has_flowers = jplant.getBoolean("has_flowers");
+            has_fruits = jplant.getBoolean("has_fruits");
+            deathcause = (CauseOfDeath) jplant.get("cod");
+            lifestage = (LifeCycleStage) jplant.get("lifcyc");
+
+        } catch (Exception e) {
+            Log.e("plANT_FROM_JSON", e.getLocalizedMessage());
+        }
+    }
+
     //------------------------ CUSTOM FUNCS -------------------------------------//
 
     public PlantSave toSave() {
@@ -273,6 +343,56 @@ public class Plant implements Comparable<Plant>{
         }
         return new PlantSave(potsize, potsize_na, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments,
                 has_flowers, has_fruits, deathcause, lifestage);
+    }
+
+    public JSONObject toJSONSave() throws JSONException {
+        JSONObject jplant = new JSONObject();
+        try {
+            JSONArray jplantlog = new JSONArray();
+            JSONArray jplantlogtype = new JSONArray();
+            for(PlantLogItem pli: log) {
+                jplantlog.put(pli.toJSONSave());
+                jplantlogtype.put(pli.getTyp());
+            }
+
+            JSONArray jplantpics = new JSONArray();
+            for(String s: logPicPaths) {
+                jplantpics.put(s);
+            }
+            JSONArray jplantcomments = new JSONArray();
+            for(Comment c: comments) {
+                jplantpics.put(c.toJSONSave());
+            }
+            JSONArray jplantpicts = new JSONArray();
+            for(LocalDateTime ldt: logPicTS) {
+                jplantpicts.put(new LDTsave(ldt).toJSONSave());
+            }
+
+            jplant.put("logitems", jplantlog);
+            jplant.put("logtypes", jplantlogtype);
+            jplant.put("plantpics", jplantpics);
+            jplant.put("pic_ts", jplantpicts);
+            jplant.put("comments", jplantcomments);
+            jplant.put("potsize", potsize);
+            jplant.put("potsize_na", potsize_na);
+            jplant.put("owned_since", new LDTsave(owned_since.atStartOfDay()).toJSONSave());
+            jplant.put("pre_existing", pre_existing);
+            jplant.put("name", name);
+            jplant.put("planttype", planttype);
+            jplant.put("location", location);
+            jplant.put("acqTyp", acqTyp.ordinal());
+            jplant.put("has_picture", has_picture);
+            jplant.put("pic_path", picture_path);
+            jplant.put("has_flowers", has_flowers);
+            jplant.put("has_fruits", has_fruits);
+            jplant.put("cod", deathcause);
+            jplant.put("lifcyc", lifestage);
+
+
+            return jplant;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public void water() {

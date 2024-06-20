@@ -1,7 +1,11 @@
 package com.example.plantdiary.plantaction;
 
+import com.example.plantdiary.LDTsave;
 import com.example.plantdiary.io.PlantActionSave;
 import com.example.plantdiary.io.PlantLogItemSave;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -43,6 +47,15 @@ public class PlantAction extends PlantLogItem {
     @Override
     public PlantActionSave toSave() {
         return new PlantActionSave(actTyp, timestamp, comment);
+    }
+
+    @Override
+    public JSONObject toJSONSave() throws JSONException {
+        JSONObject jpasave = new JSONObject();
+        jpasave.put("comment", comment);
+        jpasave.put("type", actTyp);
+        jpasave.put("timestamp", new LDTsave(timestamp).toJSONSave());
+        return jpasave;
     }
 
 

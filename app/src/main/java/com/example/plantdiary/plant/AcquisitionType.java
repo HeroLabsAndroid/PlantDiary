@@ -14,4 +14,12 @@ public enum AcquisitionType {
                 return "Sonstig";
         }
     }
+
+    public static AcquisitionType fromOrdinal(int i) {
+        switch(i) {
+            case 0: return ADOPTED;
+            case 1: return SELFRAISED;
+            default: return ADOPTED;
+        }
+    }
 }

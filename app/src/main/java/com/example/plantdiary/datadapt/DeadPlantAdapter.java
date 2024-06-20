@@ -21,6 +21,9 @@ import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.io.DeadPlant;
 import com.example.plantdiary.io.PlantDiaryIO;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
@@ -47,8 +50,14 @@ public class DeadPlantAdapter extends RecyclerView.Adapter<DeadPlantAdapter.View
     void removeItem(ViewHolder holder) {
         localDataSet.remove(holder.getAdapterPosition());
         notifyItemRemoved(holder.getAdapterPosition());
+        try {
+            PlantDiaryIO.saveDeadPlants(ctx, localDataSet);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
-        PlantDiaryIO.saveDeadPlants(ctx, localDataSet);
         dprListen.onDeadPlantRemoved();
     }
 

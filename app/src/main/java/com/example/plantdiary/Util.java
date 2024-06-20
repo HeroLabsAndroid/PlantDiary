@@ -12,6 +12,9 @@ import java.util.Locale;
 public class Util {
     public final static int ACTCODE_PLANT = 2;
     public static final int ACTCODE_PLANTROLL = 4;
+
+    public static final int ACTCODE_EXPORT = 8;
+    public static final int ACTCODE_IMPORT = 9;
     public static Bitmap RotateBitmap(Bitmap source, float angle)
     {
         Matrix matrix = new Matrix();

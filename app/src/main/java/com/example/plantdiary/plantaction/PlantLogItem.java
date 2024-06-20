@@ -2,6 +2,9 @@ package com.example.plantdiary.plantaction;
 
 import com.example.plantdiary.io.PlantLogItemSave;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -58,8 +61,12 @@ public abstract class PlantLogItem {
         comment = plis.comment;
     }
 
+
+
     //------------------ METHODS ------------------------------//
     public abstract  PlantLogItemSave toSave();
+
+    public abstract JSONObject toJSONSave() throws JSONException;
 
     public static PlantLogItem fromSave(PlantLogItemSave save) {
         return null;

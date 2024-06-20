@@ -14,6 +14,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CompoundButton;
@@ -33,6 +34,7 @@ import com.example.plantdiary.plant.PlantGridData;
 import com.example.plantdiary.plantaction.CauseOfDeath;
 import com.example.plantdiary.plantaction.Comment;
 import com.example.plantdiary.plantaction.PlantActionType;
+import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.File;
@@ -74,7 +76,11 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
     //------------- CUSTOM FUNCS -------------------------------------------//
 
     void launchDeadPlantActivity() {
-        PlantDiaryIO.saveData(this, plants);
+        try {
+            PlantDiaryIO.saveData(this, plants);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         Intent plantIntent = new Intent(MainActivity.this, DeadPlantActivity.class);
         ActivityCompat.startActivity(this, plantIntent, null);
     }
@@ -113,7 +119,11 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
     }
 
     public void launchPlantActivity(int plantidx) {
-        PlantDiaryIO.saveData(this, plants);
+        try {
+            PlantDiaryIO.saveData(this, plants);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
         Intent plantIntent = new Intent(MainActivity.this, PlantActivity.class);
         plantIntent.putExtra("idx", plantidx);
         plantIntent.putExtra("plant", plants.get(plantidx).toSave());
@@ -155,6 +165,33 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         }
     }
 
+    public void export_dat() {
+        //Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT_TREE);
+
+
+        //startActivityForResult(intent, 3);
+        Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+        intent.putExtra(Intent.EXTRA_TITLE, "plantlogsave");
+
+        // Optionally, specify a URI for the directory that should be opened in
+        // the system file picker when your app creates the document.
+        //intent.putExtra(DocumentsContract.EXTRA_INITIAL_URI, pickerInitialUri);
+
+        startActivityForResult(intent, Util.ACTCODE_EXPORT);
+
+    }
+
+    public void import_dat() {
+        Intent intent = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+        intent.addCategory(Intent.CATEGORY_OPENABLE);
+        intent.setType("text/plain");
+
+
+        startActivityForResult(intent, Util.ACTCODE_IMPORT);
+    }
+
     //------------- OVERRIDES -------------------------------------------//
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -185,6 +222,13 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
 
 
         controlsCLYT.setVisibility(View.GONE);
+
+        exportBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                export_dat();
+            }
+        });
 
         plantRecView.setLayoutManager(new GridLayoutManager(this, 2));
         pgdat = new ArrayList<>();
@@ -246,20 +290,32 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen", plants.size()));
     }
 
+
+
     @Override
     protected void onPause() {
-        PlantDiaryIO.saveData(this, plants);
+        try {
+            PlantDiaryIO.saveData(this, plants);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         super.onPause();
     }
 
     @Override
     public void onPlantAdded(Plant plant) {
+        Log.d("ON_PLANT_ADDED", "added plant "+plant.getName());
         int pos = 0;
         while(pos < plants.size() && plants.get(pos).compareTo(plant)<0) {
             pos++;
         }
         plants.add(pos, plant);
         pgdat.add(pos, new PlantGridData(plant));
+        try {
+            PlantDiaryIO.saveData(this, plants);
+        } catch(Exception e) {
+            Log.d("ON_PLANT_ADDED", "Error saving data: "+e.getLocalizedMessage());
+        }
         plantRecView.getAdapter().notifyItemInserted(pos);
         plantRecView.getAdapter().notifyItemRangeChanged(pos, 1);
         plantcntTv.setText(String.format(Locale.getDefault(), "%d Pflanzen, %d Einträge", plants.size(), plantRecView.getAdapter().getItemCount()));
@@ -328,6 +384,35 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
                 } else errfl = 3;
             } else errfl = 4;
         } else if(requestCode == Util.ACTCODE_PLANT) errfl = 1;
+        else if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
+            // The result data contains a URI for the document or directory that
+            // the user selected.
+            Uri uri = null;
+            if (data != null) {
+                uri =data.getData();
+
+                if(PlantDiaryIO.exportData(plants, fallen_brothers, uri, getContentResolver())) {
+                    Snackbar.make(this, exportBtn, "Exported "+plants.size()+" plantlogs and " + fallen_brothers.size() + "dead plants!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                } else {
+                    Snackbar.make(this, exportBtn, "Error exporting "+plants.size()+" plantlogs and " + fallen_brothers.size() + "dead plants :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+            }
+        }else if(requestCode == 4 && resultCode == Activity.RESULT_OK) {
+           /* Uri uri = null;
+            if (data != null) {
+                uri = data.getData();
+
+                logs = DatProc.importData(uri, getContentResolver());
+                assert logs != null;
+                if (!logs.isEmpty()) {
+                    Snackbar.make(this, btnExport, "Imported " + logs.size() + " logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    rclvwMedlist.setAdapter(new MedAdapter(logs, this, getSupportFragmentManager()));
+                    save_dat();
+                } else {
+                    Snackbar.make(this, btnExport, "Error importing " + logs.size() + " logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+                }
+            }*/
+        }
 
         if(errfl > 0) {
             String errstr = "";
@@ -351,6 +436,7 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
             Toast.makeText(this, errstr,
                     Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -367,7 +453,11 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         }
 
         fallen_brothers.add(new DeadPlant(plant, cod));
-        PlantDiaryIO.saveDeadPlants(this, fallen_brothers);
+        try {
+            PlantDiaryIO.saveDeadPlants(this, fallen_brothers);
+        } catch(Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

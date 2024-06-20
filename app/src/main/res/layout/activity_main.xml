@@ -112,6 +112,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
         android:backgroundTint="@color/DRK_ACC1"
         android:text="Export"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -121,11 +122,11 @@
     <Button
         android:id="@+id/BTN_import"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
         android:layout_marginStart="16dp"
         android:backgroundTint="@color/DRK_ACC4"
         android:text="Import"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/BTN_export"
         app:layout_constraintStart_toEndOf="@+id/BTN_export"
         app:layout_constraintTop_toTopOf="@+id/BTN_export" />
 
