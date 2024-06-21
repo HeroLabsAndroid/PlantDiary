@@ -27,6 +27,7 @@ import com.example.plantdiary.dialog.AttachCommentDialog;
 import com.example.plantdiary.dialog.CauseOfDeathDialog;
 import com.example.plantdiary.dialog.NewPlantDialog;
 import com.example.plantdiary.io.DeadPlant;
+import com.example.plantdiary.io.FullData;
 import com.example.plantdiary.io.PlantDiaryIO;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
@@ -37,7 +38,10 @@ import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 
+import org.json.JSONException;
+
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -230,6 +234,13 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
             }
         });
 
+        importBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                import_dat();
+            }
+        });
+
         plantRecView.setLayoutManager(new GridLayoutManager(this, 2));
         pgdat = new ArrayList<>();
         for(Plant p: plants) {
@@ -384,7 +395,7 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
                 } else errfl = 3;
             } else errfl = 4;
         } else if(requestCode == Util.ACTCODE_PLANT) errfl = 1;
-        else if (requestCode == 3 && resultCode == Activity.RESULT_OK) {
+        else if (requestCode == Util.ACTCODE_EXPORT && resultCode == Activity.RESULT_OK) {
             // The result data contains a URI for the document or directory that
             // the user selected.
             Uri uri = null;
@@ -397,21 +408,35 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
                     Snackbar.make(this, exportBtn, "Error exporting "+plants.size()+" plantlogs and " + fallen_brothers.size() + "dead plants :(", BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
             }
-        }else if(requestCode == 4 && resultCode == Activity.RESULT_OK) {
-           /* Uri uri = null;
+        }else if(requestCode == Util.ACTCODE_IMPORT && resultCode == Activity.RESULT_OK) {
+           Uri uri = null;
             if (data != null) {
                 uri = data.getData();
 
-                logs = DatProc.importData(uri, getContentResolver());
-                assert logs != null;
-                if (!logs.isEmpty()) {
-                    Snackbar.make(this, btnExport, "Imported " + logs.size() + " logs!", BaseTransientBottomBar.LENGTH_SHORT).show();
-                    rclvwMedlist.setAdapter(new MedAdapter(logs, this, getSupportFragmentManager()));
-                    save_dat();
+                FullData dat = PlantDiaryIO.importData(uri, getContentResolver());
+                if (!dat.isEmpty()) {
+                    Snackbar.make(this, importBtn, "Imported " + dat.plants.size() + " plants and "+dat.deadplants.size()+" dead plants!", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    plants = dat.plants;
+                    fallen_brothers = dat.deadplants;
+                    pgdat = new ArrayList<>();
+                    for(Plant p: plants) {
+                        pgdat.add(new PlantGridData(p));
+                    }
+                    PlantAdapter plAdapt = new PlantAdapter(this, pgdat);
+                    plantRecView.setAdapter(plAdapt);
+                    try {
+                        PlantDiaryIO.saveData(this, plants);
+                        PlantDiaryIO.saveDeadPlants(this, fallen_brothers);
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
+
                 } else {
-                    Snackbar.make(this, btnExport, "Error importing " + logs.size() + " logs :(", BaseTransientBottomBar.LENGTH_SHORT).show();
+                    Snackbar.make(this, importBtn, "Error importing "+ dat.plants.size() + " plants and "+dat.deadplants.size()+" dead plants!", BaseTransientBottomBar.LENGTH_SHORT).show();
                 }
-            }*/
+            }
         }
 
         if(errfl > 0) {

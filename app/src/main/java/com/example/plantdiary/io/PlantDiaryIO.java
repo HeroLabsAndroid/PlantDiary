@@ -39,6 +39,18 @@ public class PlantDiaryIO {
 
         return dparr;
     }
+
+    static private ArrayList<Plant> plants_from_json(String s) throws JSONException {
+        ArrayList<Plant> parr = new ArrayList<>();
+
+        JSONObject jsave = new JSONObject(s);
+        JSONArray jparr = jsave.getJSONArray("plants");
+        for(int i=0; i<jparr.length(); i++) {
+            parr.add(new Plant(jparr.getJSONObject(i)));
+        }
+
+        return parr;
+    }
     static public ArrayList<DeadPlant> loadDeadPlants(Context con) {
         try {
             FileInputStream fis = con.openFileInput("deadplants.dat");
@@ -63,6 +75,92 @@ public class PlantDiaryIO {
             return new ArrayList<>();
         }
 
+
+    }
+
+    static public ArrayList<Plant> loadData(Context con) {
+
+        try {
+            FileInputStream fis = con.openFileInput("plantlog.dat");
+            FileReader fileReader = new FileReader(fis.getFD());
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            StringBuilder stringBuilder = new StringBuilder();
+
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                stringBuilder.append(line).append("\n");
+                line = bufferedReader.readLine();
+            }
+            bufferedReader.close();// This response will have Json Format String
+
+            String response = stringBuilder.toString();
+
+            Log.d("JSON DATA (LOADED)", response);
+
+            return plants_from_json(response);
+        } catch (Exception e) {
+            Log.e("PLANT_FROM_JSON", e.getLocalizedMessage());
+            return new ArrayList<>();
+        }
+
+
+    }
+
+    static public void saveDeadPlants(Context con, ArrayList<DeadPlant> logs) throws JSONException, IOException {
+        JSONObject deadplantsave = new JSONObject();
+
+        JSONArray deadplantarr = new JSONArray();
+
+        for(DeadPlant pl: logs) {
+            deadplantarr.put(pl.toJSONSave());
+        }
+        deadplantsave.put("deadplants", deadplantarr);
+
+        FileOutputStream fos = con.openFileOutput("deadplants.dat", Context.MODE_PRIVATE);
+
+
+
+        FileWriter fw;
+        try {
+            fw = new FileWriter(fos.getFD());
+            fw.write(deadplantsave.toString());
+            fw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fos.getFD().sync();
+            fos.close();
+            Log.d("JSON DATA (SAVED)", deadplantsave.toString());
+        }
+    }
+
+
+    static public void saveData(Context con, ArrayList<Plant> logs) throws IOException, JSONException {
+        JSONObject plantsave = new JSONObject();
+
+        JSONArray plantarr = new JSONArray();
+
+        for(Plant pl: logs) {
+            plantarr.put(pl.toJSONSave());
+        }
+        plantsave.put("plants", plantarr);
+
+
+        FileOutputStream fos = con.openFileOutput("plantlog.dat", Context.MODE_PRIVATE);
+        Log.d("SAVDAT", "Opened file.");
+
+        FileWriter fw;
+        try {
+            fw = new FileWriter(fos.getFD());
+            fw.write(plantsave.toString());
+            fw.close();
+            Log.d("JSON DATA (SAVED)", plantsave.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            fos.getFD().sync();
+            fos.close();
+        }
 
     }
 
@@ -104,58 +202,45 @@ public class PlantDiaryIO {
         }
     }
 
-
-
-    static public void saveDeadPlants(Context con, ArrayList<DeadPlant> logs) throws JSONException, IOException {
-        JSONObject deadplantsave = new JSONObject();
-
-        JSONArray deadplantarr = new JSONArray();
-
-        for(DeadPlant pl: logs) {
-            deadplantarr.put(pl.toJSONSave());
-        }
-        deadplantsave.put("deadplants", deadplantarr);
-
-        FileOutputStream fos = con.openFileOutput("deadplants.dat", Context.MODE_PRIVATE);
-
-
-
-        FileWriter fw;
+    static public FullData data_from_json(String s) {
         try {
-            fw = new FileWriter(fos.getFD());
-            fw.write(deadplantsave.toString());
-            fw.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            fos.getFD().sync();
-            fos.close();
-            Log.d("JSON DATA (SAVED)", deadplantsave.toString());
+            JSONObject jsave = new JSONObject(s);
+            JSONArray plarr = jsave.getJSONArray("plants");
+            JSONArray dplarr = jsave.getJSONArray("deadplants");
+
+            JSONObject plantsave = new JSONObject();
+            plantsave.put("plants", plarr);
+            ArrayList<Plant> plants = plants_from_json(plantsave.toString());
+
+            JSONObject deadplantsave = new JSONObject();
+            deadplantsave.put("deadplants", dplarr);
+            ArrayList<DeadPlant> deadplants = deadplants_from_json(deadplantsave.toString());
+
+            return new FullData(plants, deadplants);
+        } catch(Exception e) {
+            Log.e("DATA_FROM_JSON", "error creating data arrays from json object: "+e.getMessage());
+            return new FullData(new ArrayList<Plant>(), new ArrayList<DeadPlant>());
         }
+
+
     }
 
-    static private ArrayList<Plant> plants_from_json(String s) throws JSONException {
-        ArrayList<Plant> parr = new ArrayList<>();
-
-        JSONObject jsave = new JSONObject(s);
-        JSONArray jparr = jsave.getJSONArray("plants");
-        for(int i=0; i<jparr.length(); i++) {
-            parr.add(new Plant(jparr.getJSONObject(i)));
-        }
-
-        return parr;
-    }
-
-    static public ArrayList<Plant> loadData(Context con) {
-
+    static public FullData importData(Uri uri, ContentResolver conres) {
         try {
-            FileInputStream fis = con.openFileInput("plantlog.dat");
+            String state = Environment.getExternalStorageState();
+            if(!Environment.MEDIA_MOUNTED.equals(state)) {
+                return new FullData(new ArrayList<Plant>(), new ArrayList<DeadPlant>());
+            }
+            ParcelFileDescriptor pfd = conres.openFileDescriptor(uri, "r");
+            assert pfd != null;
+            FileInputStream fis = new FileInputStream(pfd.getFileDescriptor());
+
             FileReader fileReader = new FileReader(fis.getFD());
             BufferedReader bufferedReader = new BufferedReader(fileReader);
             StringBuilder stringBuilder = new StringBuilder();
 
             String line = bufferedReader.readLine();
-            while (line != null) {
+            while (line != null){
                 stringBuilder.append(line).append("\n");
                 line = bufferedReader.readLine();
             }
@@ -163,45 +248,17 @@ public class PlantDiaryIO {
 
             String response = stringBuilder.toString();
 
-            Log.d("JSON DATA (LOADED)", response);
-
-            return plants_from_json(response);
-        } catch (Exception e) {
-            Log.e("PLANT_FROM_JSON", e.getLocalizedMessage());
-            return new ArrayList<>();
+            fis.close();
+            pfd.close();
+            return data_from_json(response);
+        } catch(Exception e) {
+            Log.e("DATEXPORT", Objects.requireNonNull(e.getMessage()));
+            e.printStackTrace();
+            return new FullData(new ArrayList<Plant>(), new ArrayList<DeadPlant>());
         }
-
-
     }
 
 
 
-    static public void saveData(Context con, ArrayList<Plant> logs) throws IOException, JSONException {
-            JSONObject plantsave = new JSONObject();
 
-            JSONArray plantarr = new JSONArray();
-
-            for(Plant pl: logs) {
-                plantarr.put(pl.toJSONSave());
-            }
-            plantsave.put("plants", plantarr);
-
-
-            FileOutputStream fos = con.openFileOutput("plantlog.dat", Context.MODE_PRIVATE);
-            Log.d("SAVDAT", "Opened file.");
-
-            FileWriter fw;
-            try {
-                fw = new FileWriter(fos.getFD());
-                fw.write(plantsave.toString());
-                fw.close();
-                Log.d("JSON DATA (SAVED)", plantsave.toString());
-            } catch (Exception e) {
-                e.printStackTrace();
-            } finally {
-                fos.getFD().sync();
-                fos.close();
-            }
-
-    }
 }
