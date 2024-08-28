@@ -1,6 +1,7 @@
 package com.example.plantdiary.plantaction;
 
 import com.example.plantdiary.io.PlantLogItemSave;
+import com.example.plantdiary.plant.AcquisitionType;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,6 +12,14 @@ import java.time.LocalDateTime;
 public abstract class PlantLogItem {
     public enum ItemType {
         ACTION, EVENT;
+
+        public static ItemType fromOrdinal(int i) {
+            switch(i) {
+                case 0: return ACTION;
+                case 1: return EVENT;
+                default: return ACTION;
+            }
+        }
     }
 
     //------- VARS ------------------------------------//
@@ -67,9 +76,5 @@ public abstract class PlantLogItem {
     public abstract  PlantLogItemSave toSave();
 
     public abstract JSONObject toJSONSave() throws JSONException;
-
-    public static PlantLogItem fromSave(PlantLogItemSave save) {
-        return null;
-    }
 
 }

@@ -63,7 +63,10 @@ public class PlantRollActivity extends AppCompatActivity implements PlantRollAda
             File imgFile = new File(plant.getLogPicPaths().get(i));
             if(imgFile.exists()) {
                 //CamOps.replaceWithDownscaled(this, plant.getLogPicPaths().get(i));
-                out.add(new BitmapAndTimestamp(BitmapFactory.decodeFile(plant.getLogPicPaths().get(i)), plant.getLogPicTS().get(i)));
+                if(plant.getLogPicTS().size()>i)
+                    out.add(new BitmapAndTimestamp(BitmapFactory.decodeFile(plant.getLogPicPaths().get(i)), plant.getLogPicTS().get(i)));
+                else
+                    out.add(new BitmapAndTimestamp(BitmapFactory.decodeFile(plant.getLogPicPaths().get(i)), Util.DEFAULT_DATE));
             }
 
 

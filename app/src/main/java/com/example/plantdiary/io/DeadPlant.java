@@ -84,18 +84,7 @@ public class DeadPlant implements Comparable<DeadPlant> {
 
     //------------------ CONSTRUCTORS -----------------------------------------------//
 
-    public DeadPlant(CauseOfDeath cod, LocalDate timeOfDeath, boolean pre_existing, LocalDate ownedSince, String profpicpath, LifeCycleStage lifeCycleStage, String name, String type) {
-        this.timeOfDeath = timeOfDeath;
-        this.pre_existing = pre_existing;
-        this.ownedSince = ownedSince;
-        this.profpicpath = profpicpath;
-        this.lifeCycleStage = lifeCycleStage;
-        this.name = name;
-        this.type = type;
-        this.causeOfDeath = cod;
 
-        img = BitmapFactory.decodeFile(profpicpath);
-    }
 
     public DeadPlant(Plant pl, CauseOfDeath cod) {
         this.timeOfDeath = LocalDate.now();
@@ -116,18 +105,14 @@ public class DeadPlant implements Comparable<DeadPlant> {
         this.pre_existing = jsave.getBoolean("preex");
         this.ownedSince = new LDTsave(jsave.getJSONObject("ownedsince")).toLDT().toLocalDate();
         this.profpicpath = jsave.getString("profpicpath");
-        this.lifeCycleStage = (LifeCycleStage) jsave.get("lifcyc");
+        this.lifeCycleStage = LifeCycleStage.fromOrdinal(jsave.getInt("lifcyc"));
         this.name = jsave.getString("name");
         this.type = jsave.getString("type");
+
+        img = BitmapFactory.decodeFile(profpicpath);
+
     }
 
-    public static DeadPlant fromSave(DeadPlantSave dps) {
-        return new DeadPlant(dps.cod, dps.timeOfDeath, dps.pre_existing, dps.ownedSince, dps.profpicpath, dps.lifeCycleStage, dps.name, dps.type);
-    }
-
-    public DeadPlantSave toSave() {
-        return new DeadPlantSave(causeOfDeath, timeOfDeath, pre_existing, ownedSince, profpicpath, lifeCycleStage, name, type);
-    }
 
     @Override
     public int compareTo(DeadPlant o) {
@@ -142,7 +127,7 @@ public class DeadPlant implements Comparable<DeadPlant> {
             jdeadplant.put("preex", pre_existing);
             jdeadplant.put("ownedsince", new LDTsave(ownedSince.atStartOfDay()).toJSONSave());
             jdeadplant.put("profpicpath", profpicpath);
-            jdeadplant.put("lifcyc", lifeCycleStage);
+            jdeadplant.put("lifcyc", lifeCycleStage.ordinal());
             jdeadplant.put("name", name);
             jdeadplant.put("type", type);
 

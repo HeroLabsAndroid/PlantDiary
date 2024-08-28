@@ -19,4 +19,17 @@ public enum PlantActionType {
                 return "----";
         }
     }
+
+    public static PlantActionType fromOrdinal(int o) {
+        switch (o) {
+            case 0:
+                return WATER;
+            case 1:
+                return FERTILIZE;
+            case 2:
+                return NONE;
+            default:
+                return PLANTCOMMENT;
+        }
+    }
 }

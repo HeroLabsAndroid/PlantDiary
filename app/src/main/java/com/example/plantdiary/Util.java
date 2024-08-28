@@ -15,6 +15,8 @@ public class Util {
 
     public static final int ACTCODE_EXPORT = 8;
     public static final int ACTCODE_IMPORT = 9;
+
+    public static final LocalDateTime DEFAULT_DATE = LocalDateTime.MIN;
     public static Bitmap RotateBitmap(Bitmap source, float angle)
     {
         Matrix matrix = new Matrix();

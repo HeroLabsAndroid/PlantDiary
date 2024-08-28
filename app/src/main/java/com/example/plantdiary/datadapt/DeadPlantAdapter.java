@@ -93,7 +93,7 @@ public class DeadPlantAdapter extends RecyclerView.Adapter<DeadPlantAdapter.View
 
         holder.getTvLifecycleStage().setText(dp.getLifeCycleStage().toString());
 
-        holder.getIvPhoto().setImageBitmap(Util.RotateBitmap(dp.getImg(), 90));
+        if(dp.getImg()!=null) holder.getIvPhoto().setImageBitmap(Util.RotateBitmap(dp.getImg(), 90));
         holder.getIvPhoto().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

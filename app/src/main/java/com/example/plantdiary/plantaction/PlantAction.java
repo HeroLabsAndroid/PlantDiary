@@ -36,10 +36,11 @@ public class PlantAction extends PlantLogItem {
         typ = ItemType.ACTION;
     }
 
-    public PlantAction(PlantActionSave pas) {
-        super(pas.timestamp, pas.comment);
-        actTyp = pas.plantActionType;
-        typ = ItemType.ACTION;
+    public PlantAction(JSONObject jsave) throws JSONException {
+        super(new LDTsave(jsave.getJSONObject("timestamp")).toLDT(), jsave.getString("comment"));
+        actTyp = PlantActionType.fromOrdinal(jsave.getInt("type"));
+        typ=ItemType.ACTION;
+
     }
 
     //-------------- OVERRIDES -----------------------//
@@ -53,7 +54,7 @@ public class PlantAction extends PlantLogItem {
     public JSONObject toJSONSave() throws JSONException {
         JSONObject jpasave = new JSONObject();
         jpasave.put("comment", comment);
-        jpasave.put("type", actTyp);
+        jpasave.put("type", actTyp.ordinal());
         jpasave.put("timestamp", new LDTsave(timestamp).toJSONSave());
         return jpasave;
     }

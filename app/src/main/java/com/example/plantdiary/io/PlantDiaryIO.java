@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -79,7 +80,8 @@ public class PlantDiaryIO {
     }
 
     static public ArrayList<Plant> loadData(Context con) {
-
+        File todel = new File("deadplants.dat");
+        if(todel.exists()) todel.delete();
         try {
             FileInputStream fis = con.openFileInput("plantlog.dat");
             FileReader fileReader = new FileReader(fis.getFD());
@@ -117,7 +119,6 @@ public class PlantDiaryIO {
         deadplantsave.put("deadplants", deadplantarr);
 
         FileOutputStream fos = con.openFileOutput("deadplants.dat", Context.MODE_PRIVATE);
-
 
 
         FileWriter fw;

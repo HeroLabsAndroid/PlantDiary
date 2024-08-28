@@ -22,4 +22,21 @@ public enum PlantEventType {
                 return "Gestorben";
         }
     }
+
+    public static PlantEventType fromOrdinal(int o) {
+        switch (o) {
+            case 0:
+                return REPOT;
+            case 1:
+                return RELOCATE;
+            case 2:
+                return RENAME;
+            case 3:
+                return NEWCOMMENT;
+            case 4:
+                return DIED;
+            default:
+                return GROWN;
+        }
+    }
 }

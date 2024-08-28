@@ -276,8 +276,8 @@ public class Plant implements Comparable<Plant>{
             JSONArray jplantlog = jplant.getJSONArray("logitems");
             JSONArray jplantlogtypes = jplant.getJSONArray("logtypes");
             for(int i=0; i<jplantlog.length(); i++) {
-                PlantLogItem.ItemType itemType = (PlantLogItem.ItemType) jplantlogtypes.get(i);
-                log.add(itemType == PlantLogItem.ItemType.ACTION ? (PlantAction) jplantlog.get(i) : (PlantEvent) jplantlog.get(i));
+                PlantLogItem.ItemType itemType = PlantLogItem.ItemType.fromOrdinal(jplantlogtypes.getInt(i));
+                log.add(itemType == PlantLogItem.ItemType.ACTION ? new PlantAction(jplantlog.getJSONObject(i)) :  new PlantEvent(jplantlog.getJSONObject(i)));
             }
 
             //retrieve comments
@@ -295,7 +295,7 @@ public class Plant implements Comparable<Plant>{
             }
 
             logPicTS = new ArrayList<>();
-            JSONArray jplantpicts = new JSONArray();
+            JSONArray jplantpicts =jplant.getJSONArray("pic_ts");
             for(int i=0; i<jplantpicts.length(); i++) {
                 logPicTS.add(new LDTsave(jplantpicts.getJSONObject(i)).toLDT());
             }
@@ -326,11 +326,11 @@ public class Plant implements Comparable<Plant>{
             }
             has_flowers = jplant.getBoolean("has_flowers");
             has_fruits = jplant.getBoolean("has_fruits");
-            deathcause = (CauseOfDeath) jplant.get("cod");
-            lifestage = (LifeCycleStage) jplant.get("lifcyc");
+            deathcause = CauseOfDeath.fromOrdinal(jplant.getInt("cod"));
+            lifestage = LifeCycleStage.fromOrdinal(jplant.getInt("lifcyc"));
 
         } catch (Exception e) {
-            Log.e("plANT_FROM_JSON", e.getLocalizedMessage());
+            Log.e("PlANT_FROM_JSON", e.getLocalizedMessage());
         }
     }
 
@@ -352,7 +352,7 @@ public class Plant implements Comparable<Plant>{
             JSONArray jplantlogtype = new JSONArray();
             for(PlantLogItem pli: log) {
                 jplantlog.put(pli.toJSONSave());
-                jplantlogtype.put(pli.getTyp());
+                jplantlogtype.put(pli.getTyp().ordinal());
             }
 
             JSONArray jplantpics = new JSONArray();
@@ -385,8 +385,8 @@ public class Plant implements Comparable<Plant>{
             jplant.put("pic_path", picture_path);
             jplant.put("has_flowers", has_flowers);
             jplant.put("has_fruits", has_fruits);
-            jplant.put("cod", deathcause);
-            jplant.put("lifcyc", lifestage);
+            jplant.put("cod", deathcause.ordinal());
+            jplant.put("lifcyc", lifestage.ordinal());
 
 
             return jplant;
@@ -407,6 +407,25 @@ public class Plant implements Comparable<Plant>{
         log.add(pa);
     }
 
+    public LocalDateTime last_watered() {
+        for(int i=log.size()-1; i>=0; i--) {
+            if(log.get(i).getTyp()== PlantLogItem.ItemType.ACTION) {
+                PlantAction pa = (PlantAction) log.get(i);
+                if(pa.getActTyp()==PlantActionType.WATER) return pa.getTimestamp();
+            }
+        }
+        return LocalDateTime.MIN;
+    }
+
+    public LocalDateTime last_fertilized() {
+        for(int i=log.size()-1; i>=0; i--) {
+            if(log.get(i).getTyp()== PlantLogItem.ItemType.ACTION) {
+                PlantAction pa = (PlantAction) log.get(i);
+                if(pa.getActTyp()==PlantActionType.FERTILIZE) return pa.getTimestamp();
+            }
+        }
+        return LocalDateTime.MIN;
+    }
 
     @Override
     public int compareTo(Plant o) {

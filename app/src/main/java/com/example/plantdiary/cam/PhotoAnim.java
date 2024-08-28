@@ -5,6 +5,7 @@ import android.widget.ImageView;
 
 import androidx.fragment.app.FragmentManager;
 
+import com.example.plantdiary.Util;
 import com.example.plantdiary.datadapt.PlantRollAdapter;
 import com.example.plantdiary.dialog.ShowPhotoDialog;
 
@@ -29,6 +30,7 @@ public class PhotoAnim implements Runnable {
 
     long updatePhoto() {
         long runtime = (idx < pics.size()-1) ? (int)(pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.HOURS)*SECONDS_PER_HOUR) : -1;
+        if(pics.get(idx).bm.getWidth()>pics.get(idx).bm.getHeight()) pics.get(idx).bm = Util.RotateBitmap(pics.get(idx).bm, 90);
         iv.setImageBitmap(pics.get(idx).bm);
         idx++;
 

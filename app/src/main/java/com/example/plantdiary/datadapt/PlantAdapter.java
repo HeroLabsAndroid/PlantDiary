@@ -3,6 +3,9 @@ package com.example.plantdiary.datadapt;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +14,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.plantdiary.R;
@@ -24,6 +28,8 @@ import com.example.plantdiary.plantaction.PlantActionType;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -69,6 +75,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
 
     public void setSelectedAction(PlantActionType selectedAction) {
         this.selectedAction = selectedAction;
+        notifyDataSetChanged();
     }
 
 
@@ -173,6 +180,42 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
             setBitmap(holder);
         }
 
+        if(selectedAction==PlantActionType.NONE) {
+            holder.getIvOverlay().setVisibility(View.INVISIBLE);
+            holder.getTvOverlay().setVisibility(View.INVISIBLE);
+            holder.getIvProfPic().setImageAlpha(255);
+        } else {
+            Log.d("PLANTADAPT", "action is " + selectedAction.toString());
+            int drwbl = 0;
+            String msg = "";
+            switch (selectedAction) {
+                case WATER:
+                    drwbl = R.drawable.acticon_wartor;
+                    msg = localDataSet.get(position).paDat.last_watered.isEqual(LocalDateTime.MIN) ?
+                            "NEVER" :
+                            String.format(Locale.getDefault(), "%d days ago.", localDataSet.get(position).paDat.last_watered.until(LocalDateTime.now(), ChronoUnit.DAYS));
+                    break;
+                case FERTILIZE:
+                    drwbl = R.drawable.acticon_dung;
+                    msg = localDataSet.get(position).paDat.last_fertilized.isEqual(LocalDateTime.MIN) ?
+                            "NEVER" :
+                            String.format(Locale.getDefault(), "%d days ago.", localDataSet.get(position).paDat.last_fertilized.until(LocalDateTime.now(), ChronoUnit.DAYS));
+                    break;
+                case PLANTCOMMENT:
+                    drwbl = R.drawable.acticon_commie;
+                    msg = String.format(Locale.getDefault(), "%d comments.", localDataSet.get(position).paDat.commiecnt);
+                    break;
+            }
+            Bitmap acticon = BitmapFactory.decodeResource(ctx.getResources(), drwbl);
+            holder.getIvOverlay().setImageBitmap(acticon);
+            holder.getIvOverlay().setImageAlpha(200);
+            holder.getIvOverlay().setScaleType(ImageView.ScaleType.FIT_CENTER);
+            holder.getIvOverlay().setVisibility(View.VISIBLE);
+            holder.getTvOverlay().setVisibility(View.VISIBLE);
+            holder.getTvOverlay().setText(msg);
+            holder.getIvProfPic().setImageAlpha(96);
+        }
+
 
     }
 
@@ -191,6 +234,9 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
         final private TextView tvName, tvType;
 
         final private ImageView ivProfPic;
+        final private ImageView ivOverlay;
+
+        final private TextView tvOverlay;
         final private FloatingActionButton fabDelete, fabEdit;
 
         public ViewHolder(@NonNull View itemView) {
@@ -200,6 +246,8 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
             fabDelete = itemView.findViewById(R.id.FAB_grditm_plant_delete);
             fabEdit = itemView.findViewById(R.id.FAB_grditm_plant_edit);
             ivProfPic = itemView.findViewById(R.id.IV_grditm_plant_profpic);
+            ivOverlay = itemView.findViewById(R.id.IV_grditm_plant_overlay);
+            tvOverlay = itemView.findViewById(R.id.TV_grditm_plant_act);
         }
 
         public TextView getTvName() {
@@ -218,5 +266,13 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
         }
 
         public ImageView getIvProfPic() {return ivProfPic;}
+
+        public ImageView getIvOverlay() {
+            return ivOverlay;
+        }
+
+        public TextView getTvOverlay() {
+            return tvOverlay;
+        }
     }
 }

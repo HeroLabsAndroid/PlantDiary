@@ -43,6 +43,12 @@ public class PlantEvent extends PlantLogItem {
         pet = pes.pet;
     }
 
+    public PlantEvent(JSONObject jsave) throws JSONException {
+        super(new LDTsave(jsave.getJSONObject("timestamp")).toLDT(), jsave.getString("comment"));
+        pet = PlantEventType.fromOrdinal(jsave.getInt("type"));
+        typ = ItemType.EVENT;
+    }
+
     //------------- OVERRIDES -----------------------//
 
     @Override
@@ -55,7 +61,7 @@ public class PlantEvent extends PlantLogItem {
         JSONObject jpesave = new JSONObject();
         jpesave.put("timestamp", new LDTsave(timestamp).toJSONSave());
         jpesave.put("comment", comment);
-        jpesave.put("type", pet);
+        jpesave.put("type", pet.ordinal());
         return jpesave;
     }
 

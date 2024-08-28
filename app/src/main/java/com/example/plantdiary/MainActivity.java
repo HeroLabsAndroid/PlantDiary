@@ -42,6 +42,7 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Locale;
 
@@ -60,16 +61,16 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
 
     Button exportBtn, importBtn;
 
-    ConstraintLayout controlsCLYT;
+    ConstraintLayout controlsCLYT, optionsCLYT;
 
-    SwitchCompat showCtrlSWTC;
+    SwitchCompat showCtrlSWTC, showOptSWTC;
 
     TextView plantcntTv;
     RecyclerView plantRecView;
 
     //------------- VARS -------------------------------------------//
 
-    boolean show_ctrls = false;
+    boolean show_ctrls = false, show_opts = true;
 
     ArrayList<Plant> plants = new ArrayList<>();
     ArrayList<PlantGridData> pgdat = new ArrayList<>();
@@ -218,6 +219,8 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
         plantcntTv = findViewById(R.id.TV_main_plantcnt);
         controlsCLYT = findViewById(R.id.CSTRLYT_plantactions);
         showCtrlSWTC = findViewById(R.id.SWTCH_show_actions);
+        showOptSWTC = findViewById(R.id.SWTCH_show_options);
+        optionsCLYT = findViewById(R.id.CSTRLYT_options);
         commentBtn = findViewById(R.id.BTN_comment);
         fallenComradesBtn = findViewById(R.id.BTN_main_fallencomrades);
 
@@ -287,6 +290,18 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
                 else {
                     controlsCLYT.setVisibility(View.GONE);
                     switchSelectedAction(PlantActionType.NONE);
+                }
+            }
+        });
+
+        optionsCLYT.setVisibility(showOptSWTC.isChecked() ? View.VISIBLE : View.GONE);
+        showOptSWTC.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                show_opts = isChecked;
+                if(show_opts) optionsCLYT.setVisibility(View.VISIBLE);
+                else {
+                    optionsCLYT.setVisibility(View.GONE);
                 }
             }
         });
@@ -487,16 +502,22 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
 
     @Override
     public void onPlantWatered(int plantidx) {
+        pgdat.get(plantidx).paDat.last_watered = LocalDateTime.now();
         plants.get(plantidx).water();
         Snackbar.make(plantRecView, String.format(Locale.getDefault(), "Watered %s", plants.get(plantidx).getName()),
                 Snackbar.LENGTH_SHORT).show();
+        plantRecView.getAdapter().notifyItemChanged(plantidx);
+        plantRecView.getAdapter().notifyItemRangeChanged(plantidx, 1);
     }
 
     @Override
     public void onPlantFertilized(int plantidx) {
+        pgdat.get(plantidx).paDat.last_fertilized = LocalDateTime.now();
         plants.get(plantidx).fertilize();
         Snackbar.make(plantRecView, String.format(Locale.getDefault(), "Fertilized %s", plants.get(plantidx).getName()),
                 Snackbar.LENGTH_SHORT).show();
+        plantRecView.getAdapter().notifyItemChanged(plantidx);
+        plantRecView.getAdapter().notifyItemRangeChanged(plantidx, 1);
     }
 
     @Override
@@ -507,5 +528,8 @@ public class MainActivity extends AppCompatActivity implements PlantAdapter.Plan
     @Override
     public void attachComment(Comment cmt, int idx) {
         plants.get(idx).getComments().add(cmt);
+        pgdat.get(idx).paDat.commiecnt=plants.get(idx).getComments().size();
+        plantRecView.getAdapter().notifyItemChanged(idx);
+        plantRecView.getAdapter().notifyItemRangeChanged(idx, 1);
     }
 }

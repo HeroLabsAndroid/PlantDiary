@@ -11,10 +11,9 @@
         android:id="@+id/CSTRLYT_plantactions"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginBottom="16dp"
         android:paddingTop="16dp"
         android:paddingBottom="16dp"
-        app:layout_constraintBottom_toTopOf="@+id/BTN_newplant"
+        app:layout_constraintBottom_toTopOf="@+id/CSTRLYT_options"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -61,73 +60,109 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/BTN_newplant"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/DRK_ACC3"
-        android:text="Mach neu"
-        android:textColor="@color/DRK_TXT_INV"
-        app:layout_constraintBottom_toTopOf="@+id/TV_main_plantcnt"
-        app:layout_constraintStart_toEndOf="@+id/SWTCH_show_actions" />
-
-    <TextView
-        android:id="@+id/TV_main_plantcnt"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="32dp"
-        android:text="TextView"
-        android:textColor="@color/DRK_TXT"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/SWTCH_show_actions" />
-
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SWTCH_show_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="8dp"
         android:text="Akt ;)   "
         android:textAlignment="viewStart"
         android:textColor="@color/DRK_TXT"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_newplant"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/BTN_newplant"
         app:thumbTint="@color/DRK_ACC2"
         app:trackTint="@color/DRK_TXT" />
 
-    <Button
-        android:id="@+id/BTN_main_fallencomrades"
-        android:layout_width="128dp"
-        android:layout_height="wrap_content"
-        android:maxLines="2"
-        android:text="Fallen Comrades"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
-        app:layout_constraintTop_toTopOf="@+id/BTN_newplant" />
-
-    <Button
-        android:id="@+id/BTN_export"
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/SWTCH_show_options"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
+        android:layout_marginEnd="64dp"
         android:layout_marginBottom="8dp"
-        android:backgroundTint="@color/DRK_ACC1"
-        android:text="Export"
+        android:checked="true"
+        android:text="Opt.  "
+        android:textAlignment="viewStart"
+        android:textColor="@color/DRK_TXT"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/TV_main_plantcnt"
-        app:layout_constraintTop_toTopOf="@+id/TV_main_plantcnt" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/SWTCH_show_actions"
+        app:thumbTint="@color/DRK_SCND"
+        app:trackTint="@color/DRK_PRIM" />
 
-    <Button
-        android:id="@+id/BTN_import"
-        android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginStart="16dp"
-        android:backgroundTint="@color/DRK_ACC4"
-        android:text="Import"
-        app:layout_constraintBottom_toBottomOf="@+id/BTN_export"
-        app:layout_constraintStart_toEndOf="@+id/BTN_export"
-        app:layout_constraintTop_toTopOf="@+id/BTN_export" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/CSTRLYT_options"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/SWTCH_show_actions"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/TV_main_plantcnt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:fontFamily="@font/almendra"
+            android:text="TextView"
+            android:textAlignment="center"
+            android:textColor="@color/DRK_TXT"
+            app:layout_constraintEnd_toStartOf="@+id/BTN_import"
+            app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_export"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:backgroundTint="@color/DRK_ACC1"
+            android:text="Export"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_newplant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/DRK_ACC3"
+            android:text="Mach neu"
+            android:textColor="@color/DRK_TXT_INV"
+            android:textSize="16sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_import"
+            android:layout_width="wrap_content"
+            android:layout_height="48dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginBottom="8dp"
+            android:backgroundTint="@color/DRK_ACC4"
+            android:text="Import"
+            app:layout_constraintBottom_toTopOf="@+id/BTN_export"
+            app:layout_constraintEnd_toEndOf="@+id/BTN_export"
+            app:layout_constraintStart_toStartOf="@+id/BTN_export"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/BTN_main_fallencomrades"
+            android:layout_width="128dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:maxLines="2"
+            android:text="Fallen Comrades"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/BTN_newplant" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
