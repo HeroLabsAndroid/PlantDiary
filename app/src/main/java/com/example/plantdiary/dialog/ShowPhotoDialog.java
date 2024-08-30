@@ -17,7 +17,6 @@ import androidx.fragment.app.DialogFragment;
 import com.example.plantdiary.R;
 import com.example.plantdiary.Util;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
-import com.example.plantdiary.cam.PhotoAnim;
 
 import java.util.ArrayList;
 
@@ -63,7 +62,8 @@ public class ShowPhotoDialog extends DialogFragment {
         ivPhoto = layout.findViewById(R.id.IV_showphoto_photo);
         tvTS = layout.findViewById(R.id.TV_showphoto_ts);
 
-        ivPhoto.setImageBitmap(Util.RotateBitmap(bat.bm, 90));
+        if(bat.bm.getHeight()<bat.bm.getWidth()) bat.bm = Util.RotateBitmap(bat.bm, 90);
+        ivPhoto.setImageBitmap(bat.bm);
         if(bat.ldt != null) tvTS.setText(Util.timestampToString(bat.ldt));
         else tvTS.setVisibility(View.INVISIBLE);
 

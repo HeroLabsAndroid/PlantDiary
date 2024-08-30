@@ -62,7 +62,8 @@ public class PlantRollAdapter extends RecyclerView.Adapter<PlantRollAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTvTS().setText(Util.timestampToString(photos.get(position).ldt));
-        holder.getIvPhoto().setImageBitmap(Util.RotateBitmap(photos.get(position).bm, 90));
+        if(photos.get(position).bm.getHeight()<photos.get(position).bm.getWidth()) photos.get(position).bm = Util.RotateBitmap(photos.get(position).bm, 90);
+        holder.getIvPhoto().setImageBitmap(photos.get(position).bm);
         holder.getIvPhoto().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

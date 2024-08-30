@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.example.plantdiary.cam.BitmapAndPath;
 import com.example.plantdiary.cam.BitmapAndTimestamp;
 import com.example.plantdiary.cam.CamOps;
-import com.example.plantdiary.cam.PhotoAnim;
 import com.example.plantdiary.datadapt.PlantRollAdapter;
 import com.example.plantdiary.dialog.ShowAnimDialog;
 import com.example.plantdiary.dialog.ShowPhotoDialog;
@@ -71,6 +70,10 @@ public class PlantRollActivity extends AppCompatActivity implements PlantRollAda
 
 
         }
+
+        for(int i=0; i<out.size(); i++) {
+            if(out.get(i).bm.getHeight()<out.get(i).bm.getWidth()) out.get(i).bm = Util.RotateBitmap(out.get(i).bm, 90);
+        }
         return out;
     }
 
@@ -78,7 +81,7 @@ public class PlantRollActivity extends AppCompatActivity implements PlantRollAda
         BitmapAndPath bmpath = CamOps.dispatchPictureIntent(this, plant, false);
         if(!(bmpath.path.compareTo(getString(R.string.FLAG_err))==0)) {
             plant.getLogPicPaths().add(bmpath.path);
-            plant.getLogPicTS().add(LocalDateTime.now());
+            plant.getLogPicTS().add(LocalDateTime.now().minusSeconds(1));
 
         }
 

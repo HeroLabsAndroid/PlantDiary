@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,23 +41,16 @@ public class ShowAnimDialog extends DialogFragment{
 
     boolean no_photos = false;
     boolean anim_running = false;
-    final long SECONDS_PER_DAY = 1;
-    final double SECONDS_PER_HOUR = SECONDS_PER_DAY/24.0;
+    final double SECONDS_PER_DAY = 1;
+    final double SECONDS_PER_MINUTE = SECONDS_PER_DAY/(24.0*60.0);
     ArrayList<BitmapAndTimestamp> pics;
     int idx = 0;
     Context ctx;
-
-
     Activity act;
-
-
 
     //---------------- CUSTOM FUNCS ---------------------------//
 
-    void updatePhoto() {
 
-
-    }
 
     void animate() {
         if(!anim_running && !pics.isEmpty()) {
@@ -96,10 +92,10 @@ public class ShowAnimDialog extends DialogFragment{
         btnStart = layout.findViewById(R.id.BTN_showanim_start);
         tvProgress = layout.findViewById(R.id.TV_showanim_progress);
 
-        tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", 0, pics.size()));
+        tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", 1, pics.size()));
 
 
-        ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(0).bm, 90));
+        ivPhoto.setImageBitmap(pics.get(0).bm);
 
         btnStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,11 +118,11 @@ public class ShowAnimDialog extends DialogFragment{
                if(!no_photos) {
                    if(idx < pics.size()-1) {
 
-                       long runtime = (idx < pics.size()-1) ? (int)((float)pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.HOURS)*SECONDS_PER_HOUR) : -1;
+                       double runtime = (idx < pics.size()-1) ? (int)((float)pics.get(idx).ldt.until(pics.get(idx+1).ldt, ChronoUnit.MINUTES)*SECONDS_PER_MINUTE) : -1;
 
                        if(runtime > 0) {
                            try {
-                               Thread.sleep(runtime*SECONDS_PER_DAY*1000);
+                               Thread.sleep((long)(runtime*1000));
 
                                //updatePhoto();
                            } catch (InterruptedException e) {
@@ -134,29 +130,55 @@ public class ShowAnimDialog extends DialogFragment{
                            }
                        }
 
-                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));
-                       ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
+                       Animation fadeIn = getAnimation();
+
+                       tvProgress.post(()->tvProgress.setAnimation(fadeIn));
+                       //TODO: Add fade animations
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
                        idx++;
 
 
                        // ivPhoto.refreshDrawableState();
 
                        //tvProgress.refreshDrawableState();
-
-
-
                    } else {
-                       ivPhoto.post(() -> ivPhoto.setImageBitmap(Util.RotateBitmap(pics.get(idx).bm, 90)));
-                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx, pics.size())));
+                       Animation fadeIn = getAnimation();
+
+                       tvProgress.post(()->tvProgress.setAnimation(fadeIn));
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                        anim_running = false;
                        btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_ACC6));
                    }
 
-                   onWaitEnd();
-
                }
            }
        });
+    }
+
+    @NonNull
+    private Animation getAnimation() {
+        Animation fadeIn = new AlphaAnimation(0,1);
+        fadeIn.setInterpolator(new DecelerateInterpolator());
+        fadeIn.setDuration(250);
+        fadeIn.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                onWaitEnd();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        return fadeIn;
     }
 
 
