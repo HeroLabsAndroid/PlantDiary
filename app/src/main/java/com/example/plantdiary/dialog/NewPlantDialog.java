@@ -151,7 +151,7 @@ public class NewPlantDialog extends DialogFragment {
         }
         plant.setLocation(locET.getText().toString());
 
-        if(edit_mode && plant.getPotsize()!=Float.parseFloat(potszET.getText().toString())) {
+        if(edit_mode && !plant.isPotsize_na() && plant.getPotsize()!=Float.parseFloat(potszET.getText().toString())) {
             PlantEvent pe = new PlantEvent(LocalDateTime.now());
             pe.setPet(PlantEventType.REPOT);
             plant.getLog().add(pe);
