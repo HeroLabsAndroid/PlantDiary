@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.DecelerateInterpolator;
@@ -131,9 +132,9 @@ public class ShowAnimDialog extends DialogFragment{
                            }
                        }
 
-                       Animation fadeIn = getAnimation();
+                       Animation fadeOut = getFadeOutAnimation();
 
-                       tvProgress.post(()->tvProgress.startAnimation(fadeIn));
+                       tvProgress.post(()->tvProgress.startAnimation(fadeOut));
                        //TODO: Add fade animations
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
@@ -144,11 +145,10 @@ public class ShowAnimDialog extends DialogFragment{
 
                        //tvProgress.refreshDrawableState();
                    } else {
-                       Animation fadeIn = getAnimation();
+                       Animation fadeOut = getFadeOutAnimation();
 
-                       tvProgress.post(()->tvProgress.startAnimation(fadeIn));
-                       ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
-                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
+                       tvProgress.post(()->tvProgress.startAnimation(fadeOut));
+
                        anim_running = false;
                        btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_ACC6));
                    }
@@ -159,7 +159,35 @@ public class ShowAnimDialog extends DialogFragment{
     }
 
     @NonNull
-    private Animation getAnimation() {
+    private Animation getFadeOutAnimation() {
+        Animation fadeOut = new AlphaAnimation(1,0);
+        fadeOut.setInterpolator(new AccelerateInterpolator());
+        fadeOut.setDuration(250);
+        fadeOut.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
+                tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
+                Animation fadeIn = getFadeInAnimation();
+                tvProgress.post(() -> tvProgress.startAnimation(fadeIn));
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+        return fadeOut;
+    }
+
+    @NonNull
+    private Animation getFadeInAnimation() {
         Animation fadeIn = new AlphaAnimation(0,1);
         fadeIn.setInterpolator(new DecelerateInterpolator());
         fadeIn.setDuration(250);
