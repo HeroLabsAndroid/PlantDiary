@@ -1,5 +1,6 @@
 package com.example.plantdiary.dialog;
 
+
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -132,7 +133,7 @@ public class ShowAnimDialog extends DialogFragment{
 
                        Animation fadeIn = getAnimation();
 
-                       tvProgress.post(()->tvProgress.setAnimation(fadeIn));
+                       tvProgress.post(()->tvProgress.startAnimation(fadeIn));
                        //TODO: Add fade animations
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
@@ -145,7 +146,7 @@ public class ShowAnimDialog extends DialogFragment{
                    } else {
                        Animation fadeIn = getAnimation();
 
-                       tvProgress.post(()->tvProgress.setAnimation(fadeIn));
+                       tvProgress.post(()->tvProgress.startAnimation(fadeIn));
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                        anim_running = false;
