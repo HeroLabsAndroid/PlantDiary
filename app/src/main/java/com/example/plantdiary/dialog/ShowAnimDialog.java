@@ -132,10 +132,12 @@ public class ShowAnimDialog extends DialogFragment{
                            }
                        }
 
-                       Animation fadeOut = getFadeOutAnimation();
+                       Animation fadeOut = getFadeInAnimation();
 
-                       tvProgress.post(()->tvProgress.startAnimation(fadeOut));
-                       //TODO: Add fade animations
+                       ivPhoto.post(()->ivPhoto.startAnimation(fadeOut));
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
+                       //TODO: Add fade animation
                        tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                        ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
                        idx++;
@@ -145,9 +147,11 @@ public class ShowAnimDialog extends DialogFragment{
 
                        //tvProgress.refreshDrawableState();
                    } else {
-                       Animation fadeOut = getFadeOutAnimation();
+                       Animation fadeOut = getFadeInAnimation();
 
-                       tvProgress.post(()->tvProgress.startAnimation(fadeOut));
+                       ivPhoto.post(()->ivPhoto.startAnimation(fadeOut));
+                       ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
+                       tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
 
                        anim_running = false;
                        btnStart.setBackgroundColor(getContext().getColor(R.color.DRK_ACC6));
@@ -174,7 +178,7 @@ public class ShowAnimDialog extends DialogFragment{
                 ivPhoto.post(() -> ivPhoto.setImageBitmap(pics.get(idx).bm));
                 tvProgress.post(() -> tvProgress.setText(String.format(Locale.getDefault(), "%d/%d", idx+1, pics.size())));
                 Animation fadeIn = getFadeInAnimation();
-                tvProgress.post(() -> tvProgress.startAnimation(fadeIn));
+                ivPhoto.post(() -> ivPhoto.startAnimation(fadeIn));
 
             }
 

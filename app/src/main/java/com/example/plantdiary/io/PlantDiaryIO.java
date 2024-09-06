@@ -181,6 +181,11 @@ public class PlantDiaryIO {
                 plantarr.put(pl.toJSONSave());
             }
             save.put("plants", plantarr);
+
+            //TODO: Save bitmaps (first make paths);
+            String uripath = uri.getPath();
+            Log.d("EXPORT", String.format(Locale.getDefault(), "uripath: %s", uripath));
+
             for(DeadPlant pl: deadplantlogs) {
                 deadplantarr.put(pl.toJSONSave());
             }
