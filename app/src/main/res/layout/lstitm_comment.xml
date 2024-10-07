@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/DRK_BG_MAIN">
+    android:background="@color/LGT_BG_MAIN">
 
     <TextView
         android:id="@+id/TV_lstitm_comment_ts"
@@ -14,7 +14,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:text="TextView"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="16sp"
         android:textStyle="italic"
         app:layout_constraintBottom_toTopOf="@+id/frameLayout"
@@ -28,7 +28,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="TextView"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintStart_toEndOf="@+id/TV_lstitm_comment_ts"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -50,7 +50,7 @@
         android:id="@+id/frameLayout"
         android:layout_width="match_parent"
         android:layout_height="2dp"
-        android:background="@color/DRK_BG_SHADE"
+        android:background="@color/LGT_BG_SHADE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

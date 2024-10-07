@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DRK_BG_MAIN"
+    android:background="@color/LGT_BG_MAIN"
     tools:context=".PlantActivity">
 
     <include
@@ -17,6 +17,16 @@
         app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_type"
         app:layout_constraintTop_toBottomOf="@+id/IV_plant_profpic" />
 
+    <include
+        android:id="@+id/INCL_TITVAL_latname"
+        layout="@layout/incl_title_value"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="@+id/INCL_TITVAL_type"
+        app:layout_constraintHorizontal_bias="0.707"
+        app:layout_constraintStart_toStartOf="@+id/INCL_TITVAL_type"
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_S_stage" />
+
     <TextView
         android:id="@+id/TV_plant_name"
         android:layout_width="wrap_content"
@@ -24,7 +34,7 @@
         android:layout_marginTop="16dp"
         android:fontFamily="@font/almendra_display"
         android:text="TextView"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="24sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -38,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_S_stage" />
+        app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_latname" />
 
     <include
         android:id="@+id/INCL_TITVAL_loc"
@@ -78,8 +88,8 @@
         android:layout_height="@dimen/PLANT_PIC_HEIGHT"
         android:layout_marginStart="32dp"
         android:layout_marginTop="16dp"
-        android:background="@color/DRK_BG_SHADE"
-        android:padding="2dp"
+        android:background="@color/LGT_BG_SHADE"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/TV_plant_name"
         app:srcCompat="@android:drawable/ic_menu_camera" />
@@ -87,7 +97,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:background="@color/DRK_BG_SHADE"
+        android:background="@color/LGT_BG_SHADE"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/INCL_TITVAL_ownedsince">
 
@@ -107,8 +117,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:fontFamily="@font/almendra"
             android:text="Log "
-            android:textColor="@color/DRK_TXT"
+            android:textColor="@color/LGT_TXT"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

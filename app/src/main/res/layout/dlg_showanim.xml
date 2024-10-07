@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DRK_BG_MAIN">
+    android:background="@color/LGT_BG_MAIN">
 
     <ImageView
         android:id="@+id/IV_showanim_photo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
-        android:background="@color/DRK_BG_SHADE"
+        android:background="@color/LGT_BG_SHADE"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="TextView"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintEnd_toEndOf="@+id/BTN_showanim_start"
         app:layout_constraintStart_toStartOf="@+id/BTN_showanim_start"
         app:layout_constraintTop_toBottomOf="@+id/BTN_showanim_start" />

@@ -38,7 +38,7 @@ public class Plant implements Comparable<Plant>{
     private AcquisitionType acqTyp;
 
     private String name;
-
+    private String name_latin;
     public ArrayList<Comment> comments = new ArrayList<>();
     private String planttype;
 
@@ -66,6 +66,13 @@ public class Plant implements Comparable<Plant>{
     //--------------------------GETTERS AND SETTERS------------------------------------//
 
 
+    public String getName_latin() {
+        return name_latin;
+    }
+
+    public void setName_latin(String name_latin) {
+        this.name_latin = name_latin;
+    }
 
     public ArrayList<LocalDateTime> getLogPicTS() {
         return logPicTS;
@@ -231,7 +238,7 @@ public class Plant implements Comparable<Plant>{
 
 
 
-    public Plant(PlantSave ps) {
+   /* public Plant(PlantSave ps) {
         this.planttype = ps.planttype;
         this.name = ps.name;
         this.location = ps.location;
@@ -267,7 +274,7 @@ public class Plant implements Comparable<Plant>{
         this.deathcause = ps.causeOfDeath;
         this.has_flowers = ps.has_flowers;
         this.has_fruits = ps.has_fruit;
-    }
+    }*/
 
     public Plant(JSONObject jplant) {
         try {
@@ -307,6 +314,7 @@ public class Plant implements Comparable<Plant>{
             owned_since = new LDTsave(jplant.getJSONObject("owned_since")).toLDT().toLocalDate();
             pre_existing = jplant.getBoolean("pre_existing");
             name = jplant.getString("name");
+            name_latin = jplant.optString("name_lat", " ");
             planttype = jplant.getString("planttype");
             location = jplant.getString("location");
             acqTyp = AcquisitionType.fromOrdinal(jplant.getInt("acqTyp"));
@@ -336,14 +344,14 @@ public class Plant implements Comparable<Plant>{
 
     //------------------------ CUSTOM FUNCS -------------------------------------//
 
-    public PlantSave toSave() {
+  /*  public PlantSave toSave() {
         ArrayList<PlantLogItemSave> logsave = new ArrayList<>();
         for(PlantLogItem pli: log) {
             logsave.add(pli.toSave());
         }
         return new PlantSave(potsize, potsize_na, owned_since, pre_existing, name, planttype, location, acqTyp, logsave, has_picture, picture_path, logPicPaths, logPicTS, comments,
                 has_flowers, has_fruits, deathcause, lifestage);
-    }
+    }*/
 
     public JSONObject toJSONSave() throws JSONException {
         JSONObject jplant = new JSONObject();
@@ -368,6 +376,7 @@ public class Plant implements Comparable<Plant>{
                 jplantpicts.put(new LDTsave(ldt).toJSONSave());
             }
 
+            jplant.put("name_lat", name_latin);
             jplant.put("logitems", jplantlog);
             jplant.put("logtypes", jplantlogtype);
             jplant.put("plantpics", jplantpics);

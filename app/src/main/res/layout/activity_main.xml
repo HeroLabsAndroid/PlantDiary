@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DRK_BG_MAIN"
+    android:background="@color/LGT_BG_MAIN"
     tools:context=".MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -68,12 +68,12 @@
         android:layout_marginBottom="8dp"
         android:text="Akt ;)   "
         android:textAlignment="viewStart"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:thumbTint="@color/DRK_ACC2"
-        app:trackTint="@color/DRK_TXT" />
+        app:trackTint="@color/LGT_TXT" />
 
     <androidx.appcompat.widget.SwitchCompat
         android:id="@+id/SWTCH_show_options"
@@ -84,7 +84,7 @@
         android:checked="true"
         android:text="Opt.  "
         android:textAlignment="viewStart"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -111,7 +111,7 @@
             android:fontFamily="@font/almendra"
             android:text="TextView"
             android:textAlignment="center"
-            android:textColor="@color/DRK_TXT"
+            android:textColor="@color/LGT_TXT"
             app:layout_constraintEnd_toStartOf="@+id/BTN_import"
             app:layout_constraintStart_toEndOf="@+id/BTN_newplant"
             app:layout_constraintTop_toTopOf="parent" />

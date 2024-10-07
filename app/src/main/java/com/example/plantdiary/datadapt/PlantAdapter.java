@@ -152,6 +152,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.getTvName().setText(localDataSet.get(position).name);
+        holder.getTvLatName().setText(localDataSet.get(position).latname);
         holder.getTvType().setText(localDataSet.get(position).type);
 
         holder.getFabDelete().setOnClickListener(new View.OnClickListener() {
@@ -231,7 +232,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
     //----------------- VIEWHOLDER ---------------------------------//
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        final private TextView tvName, tvType;
+        final private TextView tvName, tvType, tvLatName;
 
         final private ImageView ivProfPic;
         final private ImageView ivOverlay;
@@ -242,6 +243,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             tvName = itemView.findViewById(R.id.TV_grditm_plant_name);
+            tvLatName = itemView.findViewById(R.id.TV_grditm_plant_latname);
             tvType = itemView.findViewById(R.id.TV_grditm_plant_type);
             fabDelete = itemView.findViewById(R.id.FAB_grditm_plant_delete);
             fabEdit = itemView.findViewById(R.id.FAB_grditm_plant_edit);
@@ -250,6 +252,7 @@ public class PlantAdapter extends RecyclerView.Adapter<PlantAdapter.ViewHolder>{
             tvOverlay = itemView.findViewById(R.id.TV_grditm_plant_act);
         }
 
+        public TextView getTvLatName() {return tvLatName;}
         public TextView getTvName() {
             return tvName;
         }

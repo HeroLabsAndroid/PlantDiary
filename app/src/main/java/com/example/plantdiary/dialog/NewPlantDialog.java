@@ -75,7 +75,7 @@ public class NewPlantDialog extends DialogFragment {
     Chip preexCHIP, nopotszCHIP;
 
     ImageView photoIV;
-    EditText nameET, typeET, locET, potszET, commentET;
+    EditText nameET, typeET, locET, potszET, commentET, namelatET;
 
     TextView dateTV, commentcntTV;
 
@@ -125,6 +125,7 @@ public class NewPlantDialog extends DialogFragment {
             for(Comment c: cmt) {
                 plant.getComments().add(c);
             }
+
         } else {
             if(plant.getName().compareTo(nameET.getText().toString())!=0) {
                 PlantEvent pe = new PlantEvent(LocalDateTime.now());
@@ -136,6 +137,8 @@ public class NewPlantDialog extends DialogFragment {
             plant.setAcqTyp(typeAdoptedRADBUTT.isChecked() ? AcquisitionType.ADOPTED : AcquisitionType.SELFRAISED);
             plant.setComments(cmt);
         }
+
+        plant.setName_latin(namelatET.getText().toString());
 
         if(edit_mode && plant.getLifestage()!=LifeCycleStage.fromOrdinal(lifecycSPN.getSelectedItemPosition())) {
             PlantEvent pe = new PlantEvent(LocalDateTime.now());
@@ -194,6 +197,7 @@ public class NewPlantDialog extends DialogFragment {
 
     void fillDialogFromPlant(Plant p) {
         nameET.setText(p.getName());
+        namelatET.setText(p.getName_latin());
 
         typeET.setText(p.getPlanttype());
 
@@ -267,6 +271,7 @@ public class NewPlantDialog extends DialogFragment {
         confirmBUTT = layout.findViewById(R.id.BTN_addplant_confirm);
 
         nameET = layout.findViewById(R.id.ET_addplant_name);
+        namelatET = layout.findViewById(R.id.ET_addplant_name_lat);
         typeET = layout.findViewById(R.id.ET_addplant_type);
         locET = layout.findViewById(R.id.ET_addplant_loc);
         potszET = layout.findViewById(R.id.ET_addplant_potsize);

@@ -6,6 +6,20 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
+    <TextView
+        android:id="@+id/TV_grditm_plant_latname"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:fontFamily="@font/almendra_display"
+        android:text="TextView"
+        android:textAlignment="center"
+        android:textColor="@color/LGT_TXT"
+        android:textStyle="bold|italic"
+        app:layout_constraintEnd_toEndOf="@+id/TV_grditm_plant_name"
+        app:layout_constraintStart_toStartOf="@+id/TV_grditm_plant_name"
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_plant_name" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_grditm_plant_edit"
         android:layout_width="wrap_content"
@@ -14,7 +28,7 @@
         android:layout_marginEnd="8dp"
         android:clickable="true"
         android:src="@drawable/acticon_edit"
-        app:tint="@color/DRK_TXT"
+        app:tint="@color/LGT_TXT"
         app:backgroundTint="@color/DRK_ACC1"
         app:fabCustomSize="32dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -29,7 +43,7 @@
         android:fontFamily="@font/almendra_display"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,15 +53,15 @@
         android:id="@+id/TV_grditm_plant_type"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:fontFamily="@font/almendra_display"
         android:text="TextView"
         android:textAlignment="center"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textStyle="bold|italic"
         app:layout_constraintEnd_toEndOf="@+id/TV_grditm_plant_name"
         app:layout_constraintStart_toStartOf="@+id/TV_grditm_plant_name"
-        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_plant_name" />
+        app:layout_constraintTop_toBottomOf="@+id/TV_grditm_plant_latname" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FAB_grditm_plant_delete"
@@ -56,7 +70,7 @@
         android:layout_marginTop="8dp"
         android:clickable="true"
         android:src="@drawable/acticon_delete"
-        app:tint="@color/DRK_TXT"
+        app:tint="@color/LGT_TXT"
         app:backgroundTint="@color/DRK_ACC1"
         app:fabCustomSize="32dp"
         app:layout_constraintEnd_toEndOf="@+id/FAB_grditm_plant_edit"
@@ -67,7 +81,7 @@
         android:id="@+id/IV_grditm_plant_profpic"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:background="@color/DRK_BG_SHADE"
+        android:background="@color/LGT_BG_SHADE"
         android:padding="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -91,7 +105,7 @@
         android:layout_marginBottom="4dp"
         android:fontFamily="@font/almendra"
         android:text="foobar"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="14sp"
         android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="@+id/IV_grditm_plant_profpic"

@@ -3,10 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/DRK_BG_SHADE"
+    android:layout_height="match_parent"
+    android:background="@color/LGT_BG_SHADE"
     android:clickable="true"
     android:scrollbars="vertical">
+
+    <EditText
+        android:id="@+id/ET_addplant_name_lat"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:inputType="text"
+        android:selectAllOnFocus="true"
+        android:text="@string/PROMPT_defineplant_namelat"
+        android:textColor="@color/LGT_TXT"
+        android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <com.google.android.material.chip.Chip
         android:id="@+id/CHP_addplant_nopotsz"
@@ -28,22 +43,22 @@
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_name"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/ET_addplant_name_lat" />
 
     <EditText
         android:id="@+id/ET_addplant_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:ems="10"
         android:inputType="text"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_type"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_name"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_name" />
 
@@ -54,7 +69,7 @@
         android:layout_marginTop="16dp"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_location"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_type"
         app:layout_constraintTop_toBottomOf="@+id/SPN_addplant_lifecycle" />
 
@@ -83,7 +98,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="@string/PROMPT_defineplant_acqtyp"
-            android:textColor="@color/DRK_GRAYOUT"
+            android:textColor="@color/LGT_GRAYOUT"
             android:textSize="16sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -104,7 +119,7 @@
                 android:layout_height="wrap_content"
                 android:buttonTintMode="src_atop"
                 android:text="selbst erschaffen"
-                android:textColor="@color/DRK_TXT"
+                android:textColor="@color/LGT_TXT"
                 app:useMaterialThemeColors="false" />
 
             <RadioButton
@@ -112,7 +127,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="adoptiert"
-                android:textColor="@color/DRK_TXT" />
+                android:textColor="@color/LGT_TXT" />
         </RadioGroup>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
@@ -125,7 +140,7 @@
         android:inputType="number|numberDecimal"
         android:selectAllOnFocus="true"
         android:text="@string/PROMPT_defineplant_potsize"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_loc"
         app:layout_constraintTop_toBottomOf="@+id/ET_addplant_loc" />
 
@@ -135,7 +150,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="datum"
-        android:textColor="@color/DRK_GRAYOUT"
+        android:textColor="@color/LGT_GRAYOUT"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="@+id/ET_addplant_potsize"
         app:layout_constraintTop_toBottomOf="@+id/CHP_addplant_nopotsz" />
@@ -169,7 +184,7 @@
         android:maxLines="4"
         android:selectAllOnFocus="true"
         android:text="@string/PROMT_defineplant_comment"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toBottomOf="@+id/TV_addplant_commentcnt" />
 
@@ -179,7 +194,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:text="Kein Kommentar."
-        android:textColor="@color/DRK_GRAYOUT"
+        android:textColor="@color/LGT_GRAYOUT"
         app:layout_constraintStart_toStartOf="@+id/TV_addplant_ownedsince"
         app:layout_constraintTop_toBottomOf="@+id/TV_addplant_ownedsince" />
 

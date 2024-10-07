@@ -23,7 +23,11 @@ import com.example.plantdiary.dialog.ShowPhotoDialog;
 import com.example.plantdiary.io.PlantSave;
 import com.example.plantdiary.plant.Plant;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Locale;
+import java.util.Objects;
 
 public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.ItemRemovedListener, PlantRollActivity.PlantRollListener, CommentAdapter.CommentRemovedListener {
 
@@ -44,9 +48,9 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
     int plantidx;
 
     RecyclerView rclvLog;
-    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclDate, inclStage;
+    View inclType, inclLoc, inclPotsize, inclAcqtyp, inclDate, inclStage, inclLatName;
 
-    TextView tvTit_Type, tvVal_Type, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_date, tvVal_date, tvTit_stage, tvVal_stage;
+    TextView tvTit_Type, tvVal_Type, tvTit_Latname, tvVal_Latname, tvTit_Loc, tvVal_Loc, tvTit_potsz, tvVal_potsz, tvTit_actyp, tvVal_actyp, tvTit_date, tvVal_date, tvTit_stage, tvVal_stage;
 
     TextView tvName;
 
@@ -73,6 +77,8 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
     }
 
     void fillLayoutWithPlantData() {
+
+        tvVal_Latname.setText(plant.getName_latin());
 
         tvVal_date.setText(plant.isPre_existing() ? getString(R.string.LBL_defineplant_preex) : Util.dateToString(plant.getOwned_since()));
 
@@ -102,7 +108,11 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         btnShowPhotos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                launchPlantActivity();
+                try {
+                    launchPlantActivity();
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -129,9 +139,9 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
 
     }
 
-    void launchPlantActivity() {
+    void launchPlantActivity() throws JSONException {
         Intent plantIntent = new Intent(PlantActivity.this, PlantRollActivity.class);
-        plantIntent.putExtra("plant", plant.toSave());
+        plantIntent.putExtra("plant", plant.toJSONSave().toString());
         ActivityCompat.startActivityForResult(this, plantIntent, Util.ACTCODE_PLANTROLL, null);
     }
 
@@ -179,6 +189,10 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         btnSwitchLog = findViewById(R.id.BTN_plant_logmode);
 
 
+        inclLatName = findViewById(R.id.INCL_TITVAL_latname);
+        tvTit_Latname = inclLatName.findViewById(R.id.TV_incl_titval_tit);
+        tvTit_Latname.setText(getString(R.string.PROMPT_defineplant_namelat));
+        tvVal_Latname = inclLatName.findViewById(R.id.TV_incl_titval_val);
     }
 
     //------------- OVERRIDES --------------------------------------//
@@ -195,7 +209,7 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         }
 
         try {
-            plant = new Plant((PlantSave) intent.getSerializableExtra("plant"));
+            plant = new Plant(new JSONObject(Objects.requireNonNull(intent.getStringExtra("plant"))));
         } catch (Exception e) {
             Log.e("PlantActivity:ONCREATE", "ERROR reading plant data");
             finish();
@@ -218,7 +232,11 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
     public void onBackPressed() {
         Intent retIntent = new Intent();
         retIntent.putExtra("plantretidx", plantidx);
-        retIntent.putExtra("plantret", plant.toSave());
+        try {
+            retIntent.putExtra("plantret", plant.toJSONSave().toString());
+        } catch (JSONException e) {
+            throw new RuntimeException(e);
+        }
         setResult(RESULT_OK, retIntent);
         finish();
         super.onBackPressed();
@@ -246,7 +264,11 @@ public class PlantActivity extends AppCompatActivity implements PlantLogAdapter.
         if(resultCode == RESULT_OK && requestCode == Util.ACTCODE_PLANTROLL) {
             if(data.hasExtra("plantret")) {
 
-                plant = new Plant((PlantSave)data.getExtras().getSerializable("plantret"));
+                try {
+                    plant = new Plant(new JSONObject(Objects.requireNonNull(data.getExtras().getString("plantret"))));
+                } catch (JSONException e) {
+                    throw new RuntimeException(e);
+                }
             }
         }
     }

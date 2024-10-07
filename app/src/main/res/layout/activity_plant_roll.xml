@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/DRK_BG_MAIN"
+    android:background="@color/LGT_BG_MAIN"
     tools:context=".PlantRollActivity">
 
     <Button
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
         android:text="TextView"
-        android:textColor="@color/DRK_TXT"
+        android:textColor="@color/LGT_TXT"
         app:layout_constraintBottom_toBottomOf="@+id/BTN_plantroll_addphoto"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/BTN_plantroll_addphoto" />
